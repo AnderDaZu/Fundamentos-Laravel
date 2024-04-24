@@ -16,6 +16,10 @@ Reforzando los fundamentos de Laravel
 
 `php artisan r:l --except-vendor -v` -> para listar y ver el middleware de las rutas que hayan sido definidas por nosotros
 
+`php artisan route:cache` -> para almacenar las rutas en caché en Laravel
+
+`php artisan route:clear` -> para borrar la caché de rutas
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
@@ -91,3 +95,17 @@ en ser descriptivos y significativos para que sea fácil entender su propósito.
 4. Evita nombres genéricos: Intenta evitar nombres de ruta genéricos como 'home' o 'pagina', ya que pueden ser confusos y difíciles de entender en un contexto más amplio.
 
 5. Sé consistente: Mantén una convención de nomenclatura coherente en toda tu aplicación para facilitar la comprensión y el mantenimiento del código.
+
+## Almacenar Rutas en Caché
+Almacenar las rutas en caché en Laravel ofrece varias ventajas:
+
+1. Mejor rendimiento: Cuando las rutas están en caché, Laravel no necesita analizar y compilar el archivo de rutas (routes/web.php y routes/api.php) en cada solicitud entrante. Esto puede mejorar significativamente el rendimiento de tu aplicación, especialmente en entornos de producción con un alto volumen de tráfico.
+
+2. Menos carga en el servidor: Al reducir la necesidad de analizar y compilar las rutas en cada solicitud, se reduce la carga en el servidor, lo que puede permitir manejar más solicitudes concurrentes con los mismos recursos.
+
+3. Estabilidad: Al almacenar las rutas en caché, se reduce la posibilidad de que cambios accidentales o maliciosos en los archivos de rutas afecten el funcionamiento de la aplicación en producción. Esto proporciona una capa adicional de estabilidad y seguridad.
+
+4. Compatibilidad con entornos sin acceso de escritura: En entornos donde el servidor web no tiene permisos de escritura en el sistema de archivos, como en algunos servicios de hosting compartido, almacenar las rutas en caché permite utilizar Laravel sin necesidad de conceder permisos adicionales.
+Para almacenar las rutas en caché en Laravel, puedes utilizar el comando artisan route:cache. Este comando generará un archivo optimizado que contiene todas las rutas definidas en tu aplicación, y Laravel utilizará este archivo en lugar de analizar el archivo de rutas en cada solicitud.
+
+Es importante tener en cuenta que, después de hacer cambios en las rutas de tu aplicación, debes ejecutar **php artisan route:clear** para borrar la caché de rutas y luego ejecutar nuevamente **php artisan route:cache** para que las nuevas rutas se reflejen en la caché.
