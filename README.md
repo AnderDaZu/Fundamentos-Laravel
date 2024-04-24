@@ -8,6 +8,14 @@ Reforzando los fundamentos de Laravel
 # Comandos
 `php artisan r:l` -> para listar las rutas
 
+`php artisan r:l --path=cursos` -> para listar rutas que inicien con 'cursos'
+
+`php artisan r:l --except-vendor` -> para listar rutas que hayan sido definidas por nosotros, excluyendo a las que se crearon por algún paquete
+
+`php artisan r:l --only-vendor` -> para listar rutas que hayn sido definidas por terceros o por algún paquete
+
+`php artisan r:l --except-vendor -v` -> para listar y ver el middleware de las rutas que hayan sido definidas por nosotros
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
