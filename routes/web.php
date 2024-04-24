@@ -17,6 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/*
 // Usando get para la pagina de contacto y post para enviar el formulario
 Route::get('/contacto', function () {
     return 'Hola desde la página de contacto con método GET';
@@ -28,4 +29,18 @@ Route::post('/contacto', function () {
 // Usando match para que se puedan utilizar los dos metodos GET y POST 
 Route::match(['get', 'post'], '/contacto2', function () {
     return 'Hola desde la página de contacto con match usando método GET y POST';
+});
+*/
+
+// rutas con parámetros -> cuando hay dos o más rutas con el mismo parámetro, podemos poner la ruta con parámetro fijo antes de la ruta con parámetro dinamico
+Route::get('cursos/informatica', function () {
+    return 'Bienvenido al curso de informatica, es un gran lenguaje de programación';
+});
+// los parámetros pueden ser nulos o no existir, por lo tanto se utiliza el simbolo de interrogación ? para indicar que el parámetro puede ser nulo o no existir
+Route::get('cursos/{curso}/{profesor?}', function ($curso, $profesor = null) {
+    if($profesor){
+        return "Estás aprendiendo {$curso} con el profe: {$profesor}";
+    }else{
+        return "Estás aprendiendo: {$curso}";
+    }
 });
