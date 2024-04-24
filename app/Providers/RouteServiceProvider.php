@@ -24,6 +24,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Definir (de forma global) un patrón de expresión regular que se aplicará automáticamente a cualquier parámetro de ruta llamado 'id'
+        // Route::pattern('uuid', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
+        // Route::pattern('id', '[0-9]+');
+
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });

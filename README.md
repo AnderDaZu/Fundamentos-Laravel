@@ -43,3 +43,28 @@ Route::get('/usuario/{id?}', function ($id = null) {
 En este ejemplo, la ruta /usuario/{id?} indica que la parte de la URL que sigue después de /usuario/ puede ser opcional, y se espera que sea un ID de usuario. Dentro de la función de cierre, se define el parámetro $id como null por defecto. Si no se proporciona ningún ID de usuario en la URL, se mostrará un mensaje indicando que no se proporcionó ningún ID. Si se proporciona un ID de usuario, se mostrará el mensaje junto con el ID.
 
 Puedes usar esta técnica para manejar rutas donde algunos parámetros pueden estar presentes o ausentes en la URL. Esto proporciona flexibilidad en el manejo de las solicitudes y te permite diseñar rutas que se adapten a diferentes casos de uso en tu aplicación.
+
+### Validador de parámetros en rutar
+Laravel ofrece varias opciones para validar los parámetros de las rutas, ya sea directamente en la definición de la ruta, en los métodos de controlador o utilizando clases dedicadas para la validación de formularios. Esto te permite garantizar que los datos proporcionados cumplan con ciertos criterios antes de ser procesados por tu aplicación. Laravel ofrece varias formas de hacerlo:
+
+1. Validación en la ruta: Puedes usar el método where al definir tus rutas para aplicar restricciones de validación a los parámetros. Por ejemplo, si quieres que un parámetro id sea un número entero, puedes hacer lo siguiente:
+```php
+Route::get('/usuario/{id}', function ($id) {
+    // Acción de la ruta...
+})->where('id', '[0-9]+');
+```
+En este caso, [0-9]+ es una expresión regular que especifica que el parámetro id debe consistir en uno o más dígitos numéricos.
+
+2. Validación en el controlador: Puedes realizar la validación en los métodos de tus controladores utilizando las clases Request o FormRequest proporcionadas por Laravel. Por ejemplo:
+```php
+use Illuminate\Http\Request;
+public function show(Request $request, $id) {
+    $request->validate([
+        'id' => 'required|numeric',
+    ]);
+    // Resto del código...
+}
+```
+En este ejemplo, se está utilizando la clase Request para acceder a los datos de la solicitud y el método validate para definir las reglas de validación. Esto asegura que el parámetro id sea requerido y numérico.
+
+3. Validación global en RouteServiceProvider: En Laravel, al agregar la línea de código Route::pattern('id', '[0-9]+'); en el archivo RouteServiceProvider, estás definiendo un patrón de expresión regular que se aplicará automáticamente a cualquier parámetro de ruta llamado 'id'

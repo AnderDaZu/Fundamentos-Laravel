@@ -43,4 +43,7 @@ Route::get('cursos/{curso}/{profesor?}', function ($curso, $profesor = null) {
     }else{
         return "Estás aprendiendo: {$curso}";
     }
-});
+})
+// ->where('curso', '[A-Za-z]+'); // where('curso','[A-Za-z]+' Se utiliza para validar que solo entre caracteres alfabeticos en el parametro curso
+//->whereAlpha('curso'); // whereAlpha('curso') Se utiliza para validar que solo entre caracteres alfabeticos en el parametro curso
+->whereAlphaNumeric('curso'); // whereAlphaNumeric('curso') Se utiliza para validar que solo entre caracteres alfanumericos en el parametro curso
