@@ -52,7 +52,7 @@ En este ejemplo, la ruta /usuario/{id?} indica que la parte de la URL que sigue 
 
 Puedes usar esta técnica para manejar rutas donde algunos parámetros pueden estar presentes o ausentes en la URL. Esto proporciona flexibilidad en el manejo de las solicitudes y te permite diseñar rutas que se adapten a diferentes casos de uso en tu aplicación.
 
-### Validador de parámetros en rutar
+### Validador de parámetros en rutas
 Laravel ofrece varias opciones para validar los parámetros de las rutas, ya sea directamente en la definición de la ruta, en los métodos de controlador o utilizando clases dedicadas para la validación de formularios. Esto te permite garantizar que los datos proporcionados cumplan con ciertos criterios antes de ser procesados por tu aplicación. Laravel ofrece varias formas de hacerlo:
 
 1. Validación en la ruta: Puedes usar el método where al definir tus rutas para aplicar restricciones de validación a los parámetros. Por ejemplo, si quieres que un parámetro id sea un número entero, puedes hacer lo siguiente:
@@ -76,3 +76,18 @@ public function show(Request $request, $id) {
 En este ejemplo, se está utilizando la clase Request para acceder a los datos de la solicitud y el método validate para definir las reglas de validación. Esto asegura que el parámetro id sea requerido y numérico.
 
 3. Validación global en RouteServiceProvider: En Laravel, al agregar la línea de código Route::pattern('id', '[0-9]+'); en el archivo RouteServiceProvider, estás definiendo un patrón de expresión regular que se aplicará automáticamente a cualquier parámetro de ruta llamado 'id'
+
+## Nombrar Rutas
+Nombrar las rutas es una buena práctica que facilita su referencia desde otras partes de tu aplicación, como las vistas, los controladores o incluso otras rutas. Los nombres de las rutas deben ser descriptivos y significativos para que sea fácil entender su propósito. Aquí tienes algunas pautas para nombrar tus rutas en Laravel:
+
+en ser descriptivos y significativos para que sea fácil entender su propósito. Aquí tienes algunas pautas para nombrar tus rutas en Laravel:
+
+1. Sé descriptivo: El nombre de la ruta debe reflejar claramente su propósito y lo que hace. Por ejemplo, si la ruta muestra el perfil de un usuario, podrías nombrarla 'perfil'.
+
+2. Usa convenciones: Laravel proporciona algunas convenciones para nombrar rutas. Por ejemplo, si estás trabajando en un CRUD (Crear, Leer, Actualizar, Eliminar), puedes nombrar las rutas relacionadas de la siguiente manera: 'entidad.index', 'entidad.create', 'entidad.show', 'entidad.edit', etc.
+
+3. Prefijos contextuales: Si tus rutas pertenecen a una sección específica de tu aplicación, como la administración, puedes prefijarlas con un nombre descriptivo para ese contexto. Por ejemplo, si tienes rutas para la administración de usuarios, podrías nombrarlas como 'admin.usuario.index', 'admin.usuario.edit', etc.
+
+4. Evita nombres genéricos: Intenta evitar nombres de ruta genéricos como 'home' o 'pagina', ya que pueden ser confusos y difíciles de entender en un contexto más amplio.
+
+5. Sé consistente: Mantén una convención de nomenclatura coherente en toda tu aplicación para facilitar la comprensión y el mantenimiento del código.

@@ -14,8 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return route('cursos.show', 1);
 });
+
+// ruta con nombre
+Route::get('/cursos/{id}', function ($id) {
+    return 'Bienvenido al curso ' . $id;
+})->name('cursos.show');
 
 /*
 // Usando get para la pagina de contacto y post para enviar el formulario
@@ -32,6 +38,7 @@ Route::match(['get', 'post'], '/contacto2', function () {
 });
 */
 
+/*
 // rutas con parámetros -> cuando hay dos o más rutas con el mismo parámetro, podemos poner la ruta con parámetro fijo antes de la ruta con parámetro dinamico
 Route::get('cursos/informatica', function () {
     return 'Bienvenido al curso de informatica, es un gran lenguaje de programación';
@@ -47,3 +54,4 @@ Route::get('cursos/{curso}/{profesor?}', function ($curso, $profesor = null) {
 // ->where('curso', '[A-Za-z]+'); // where('curso','[A-Za-z]+' Se utiliza para validar que solo entre caracteres alfabeticos en el parametro curso
 //->whereAlpha('curso'); // whereAlpha('curso') Se utiliza para validar que solo entre caracteres alfabeticos en el parametro curso
 ->whereAlphaNumeric('curso'); // whereAlphaNumeric('curso') Se utiliza para validar que solo entre caracteres alfanumericos en el parametro curso
+*/
