@@ -14,14 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    // return view('welcome');
-    return route('cursos.show', 1);
+    return view('welcome');
+    // return route('cursos.show', 1);
 });
 
+/*
 // ruta con nombre
 Route::get('/cursos/{id}', function ($id) {
     return 'Bienvenido al curso ' . $id;
 })->name('cursos.show');
+*/
 
 /*
 // Usando get para la pagina de contacto y post para enviar el formulario
@@ -55,3 +57,33 @@ Route::get('cursos/{curso}/{profesor?}', function ($curso, $profesor = null) {
 //->whereAlpha('curso'); // whereAlpha('curso') Se utiliza para validar que solo entre caracteres alfabeticos en el parametro curso
 ->whereAlphaNumeric('curso'); // whereAlphaNumeric('curso') Se utiliza para validar que solo entre caracteres alfanumericos en el parametro curso
 */
+
+// Rutas necesarias para crear un crud
+// Ruta para mostrar el listado de cursos
+Route::get('cursos', function () {
+    return "Listado de cursos";
+});
+// Ruta para crear un nuevo curso
+Route::get('cursos/create', function () {
+    return "Formulario para crear un nuevo curso";
+});
+// Ruta para guardar un nuevo curso
+Route::post('cursos', function () {
+    return "Guardar el nuevo curso";
+});
+// Ruta para mostrar detalle del curso
+Route::get('cursos/{id}', function ($id) {
+    return "Detalle {$id}";
+});
+// Ruta para editar un curso
+Route::get('cursos/{id}/edit', function ($id) {
+    return "Editar el curso {$id}";
+});
+// Ruta para actualizar un curso
+Route::put('cursos/{id}', function ($id) {
+    return "Actualizar el curso {$id}";
+});
+// Ruta para eliminar un curso
+Route::delete('cursos/{id}', function ($id) {
+    return "Eliminar el curso {$id}";
+});
