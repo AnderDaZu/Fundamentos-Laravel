@@ -7,6 +7,6 @@
     <title>Post</title>
 </head>
 <body>
-    <h1>Aquí se mostrará el detalle del post</h1>
+    <h1>Aquí se mostrará el detalle del post {{ $post }}</h1>
 </body>
 </html>

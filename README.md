@@ -231,3 +231,54 @@ Route::group(['middleware' => 'auth'], function () {
 ``` 
 ### Grupo de Rutas vs Route Resource
 Un grupo de rutas se utiliza para aplicar configuraciones comunes a un conjunto de rutas, mientras que Route::resource se utiliza para definir rápidamente rutas para un controlador que sigue el patrón RESTful. Puedes usarlos juntos en tu aplicación dependiendo de tus necesidades específicas. Por ejemplo, podrías envolver un Route::resource dentro de un grupo de rutas para aplicar middleware a todas las rutas generadas por Route::resource.
+
+# Vistas
+## Pasar parámetros a vistas
+Para pasar parámetros a las vistas desde el controlador en Laravel, puedes utilizar el método with() o compact() en la respuesta de la vista. Estos métodos te permiten enviar datos a la vista para que puedan ser accesibles desde el archivo de plantilla de Blade.
+### Método with()
+Aquí tienes un ejemplo de cómo pasar parámetros a una vista desde el controlador utilizando el método with():
+```php
+use Illuminate\Http\Request;
+class UserController extends Controller
+{
+    public function index()
+    {
+        $usuarios = User::all();
+        return view('usuarios.index')->with('usuarios', $usuarios);
+    }
+}
+```
+En este ejemplo, $usuarios es una colección de objetos User que queremos pasar a la vista usuarios.index. Usamos el método with() para pasar esta colección a la vista con el nombre 'usuarios'.
+También puedes pasar múltiples parámetros a la vista separándolos por coma dentro del método with():
+```php
+return view('usuarios.index')->with('usuarios', $usuarios)->with('titulo', 'Lista de usuarios');
+```
+### Método compact()
+Otra forma de pasar parámetros a las vistas es utilizando el método compact(), que toma una lista de nombres de variables y crea un array asociativo donde las claves son los nombres de las variables y los valores son los valores de esas variables:
+```php
+return view('usuarios.index', compact('usuarios', 'titulo'));
+```
+En este ejemplo, compact('usuarios', 'titulo') es equivalente a ['usuarios' => $usuarios, 'titulo' => $titulo].
+Una vez que has pasado los parámetros a la vista desde el controlador, puedes acceder a ellos en el archivo de plantilla de Blade correspondiente utilizando la sintaxis de doble corchete ({{ $nombre_variable }}). Por ejemplo:
+```php
+@foreach($usuarios as $usuario)
+    {{ $usuario->nombre }}
+@endforeach
+```
+### Método View::share(key, value): para pasar parámetros a todas las vistas
+Se utiliza para compartir datos con todas las vistas de tu aplicación. Esto significa que puedes definir ciertos datos una vez y hacer que estén disponibles para todas las vistas sin tener que pasar explícitamente esos datos a cada vista desde el controlador.
+Por ejemplo, si tienes datos que necesitas mostrar en el encabezado o pie de página de todas las páginas de tu sitio web, puedes compartir esos datos utilizando View::share() en un servicio de proveedor de Laravel, como AppServiceProvider. Esto evita que tengas que pasar esos datos desde cada controlador a cada vista, lo que puede ser tedioso y repetitivo.
+**Ejemplo práctico:**
+```php
+use Illuminate\Support\Facades\View;
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        View::share('nombre_sitio', 'Mi Sitio Web');
+    }
+}
+```
+En este ejemplo, estamos compartiendo la variable $nombre_sitio con todas las vistas de la aplicación, lo que significa que ahora puedes acceder a esta variable en cualquier vista sin tener que pasarla explícitamente desde el controlador.
+
+> Esto es útil para datos globales que necesitas en muchas partes de tu aplicación y simplifica la gestión de esos datos al compartirlos automáticamente con todas las vistas. Sin embargo, debes tener cuidado al usar View::share() para no sobrecargar las vistas con demasiados datos innecesarios, ya que esto podría afectar negativamente al rendimiento de tu aplicación.

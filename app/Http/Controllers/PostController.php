@@ -21,23 +21,23 @@ class PostController extends Controller
         return "Guardar el nuevo post";
     }
 
-    public function show($id)
+    public function show($post)
     {
-        return view('posts.show', compact('id'));
+        return view('posts.show', compact('post'));
     }
 
-    public function edit($id)
+    public function edit($post)
     {
-        return view('posts.edit', compact('id'));
+        return view('posts.edit', compact('post'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $post)
     {
-        return "Actualizar el post {$id}";
+        return "Actualizar el post {$post}";
     }
 
-    public function destroy($id)
+    public function destroy($post)
     {
-        return "Eliminar el post {$id}";
+        return "Eliminar el post {$post}";
     }
 }
