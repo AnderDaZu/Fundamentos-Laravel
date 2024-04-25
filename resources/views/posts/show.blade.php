@@ -8,5 +8,7 @@
 </head>
 <body>
     <h1>Aquí se mostrará el detalle del post {{ $post }}</h1>
+
+    <h2>{{ $pais }}</h2>
 </body>
 </html>

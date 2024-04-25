@@ -307,3 +307,24 @@ return [
     ])->toArray(),
 ]
 ```
+
+## View Composer
+En Laravel, los View Composers son una forma de compartir datos con varias vistas de manera eficiente y reutilizable. Permiten ejecutar lógica específica antes de que una vista sea renderizada, lo que te permite pasar datos dinámicos a tus vistas de forma automática sin tener que hacerlo manualmente en cada método del controlador.
+
+Aquí tienes un resumen de para qué sirve y cómo se utiliza un View Composer en Laravel:
+1. Compartir datos con vistas específicas: Los View Composers te permiten compartir datos con una o más vistas específicas. Esto es útil cuando necesitas que ciertos datos estén disponibles en múltiples vistas de tu aplicación.
+2. Ejecutar lógica antes de renderizar la vista: Puedes ejecutar cualquier lógica necesaria para obtener los datos que deseas compartir con la vista dentro de un View Composer. Esto podría incluir consultas a la base de datos u operaciones de procesamiento de datos.
+3. Organización del código: Los View Composers te permiten mantener tu código limpio y organizado al separar la lógica de presentación de la lógica de negocio. Esto hace que tus controladores sean más delgados y tus vistas más simples y fáciles de entender.
+4. Reutilización de código: Puedes reutilizar View Composers en diferentes partes de tu aplicación para compartir los mismos datos con múltiples vistas. Esto evita la duplicación de código y facilita la gestión de datos compartidos.
+5. Flexibilidad: Los View Composers te ofrecen flexibilidad en cuanto a cuándo y dónde se comparten los datos con las vistas. Puedes definir View Composers en cualquier lugar, como en archivos de proveedores de servicios, archivos de rutas o incluso directamente en tus archivos de rutas web.
+Aquí tienes un ejemplo básico de cómo se utiliza un View Composer en Laravel:
+```php
+use Illuminate\Support\Facades\View;
+View::composer('mi.vista', function ($view) {
+    $view->with('nombre', 'John Doe');
+});
+```
+En caso de crearse un archivo en **app/View/Composers/ArchivoComposer.php**, se debe especificar en AppServiceProvider o algún otro archivo similar (ViewServiceProvider) que dicho composer creado se aplique a ciertas rutas, **por ejemplo:**
+```php
+View::composer('posts.*', ArchivoComposer::class);
+```

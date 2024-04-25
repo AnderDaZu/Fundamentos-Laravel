@@ -7,6 +7,12 @@
     <title>Post</title>
 </head>
 <body>
-    <h1>Aquí se mostrará el formulario para editar post {{ $post }} {{ $prueba }}</h1>
+    <h1>Aquí se mostrará el formulario para editar post {{ $post }}</h1>
+
+    <h2>{{ $prueba }}</h2>
+
+    <h2>{{ $marca }}</h2>
+
+    <h2>{{ $marca2 }}</h2>
 </body>
 </html>
