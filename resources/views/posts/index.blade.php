@@ -9,8 +9,35 @@
 <body>
     <h1>Aquí se mostrarán los posts</h1>
 
+    {{-- Directiva @switch --}}
+    @switch($dia)
+        @case(1)
+            <p>Lunes</p>
+            @break
+        @case(2)
+            <p>Martes</p>
+            @break
+        @case(3)
+            <p>Miercoles</p>
+            @break
+        @case(4)
+            <p>Jueves</p>
+            @break
+        @case(5)
+            <p>Viernes</p>
+            @break
+        @case(6)
+            <p>Sabado</p>
+            @break
+        @case(7)
+            <p>Domingo</p>
+            @break
+        @default
+            <p>No es un diá de la semana</p>
+    @endswitch
+
     {{-- Directivas @env @production --}}
-    @env('local')
+    {{-- @env('local')
         <p>Estamos en local</p>
     @endenv
 
@@ -19,7 +46,7 @@
     @endenv
     @production
         <p>Estamos en producción 2.0</p>
-    @endproduction
+    @endproduction --}}
 
     {{-- Directivas Condicionales --}}
     {{-- @if (true)

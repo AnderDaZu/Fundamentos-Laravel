@@ -431,3 +431,23 @@ La sintaxis general de @env es la siguiente:
 @endenv
 ```
 > Esta directiva Blade es útil para condicionar el contenido de tus vistas en función del entorno de tu aplicación, lo que te permite personalizar la salida según sea necesario para el desarrollo, pruebas o producción.
+
+## Directiva @switch
+La directiva Blade @switch en Laravel proporciona una forma conveniente de escribir estructuras de control switch en tus vistas Blade. Esta directiva te permite comparar una expresión con varios casos y ejecutar un bloque de código correspondiente al caso coincidente.
+La estructura de la directiva @switch es similar a la estructura de control switch de PHP. 
+Aquí tienes un ejemplo básico de cómo usar @switch en una vista Blade:
+```blade
+@switch($opcion)
+    @case(1)
+        Opción 1 seleccionada
+        @break
+
+    @case(2)
+        Opción 2 seleccionada
+        @break
+
+    @default
+        Opción no válida
+@endswitch
+```
+El uso de la directiva Blade @switch puede hacer que tu código sea más legible y conciso cuando necesitas realizar una comparación de múltiples casos en tus vistas Blade. Es una forma conveniente de escribir estructuras de control switch directamente en tus plantillas sin tener que escribir código PHP dentro de ellas.
