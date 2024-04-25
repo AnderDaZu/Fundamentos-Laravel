@@ -24,6 +24,8 @@ Reforzando los fundamentos de Laravel
 
 `php artisan make:controller PostController -r` -> para crear un controlador con los diferentes métodos  (index, create, store, etc)
 
+`php artisan make:provider ViewServiceProvider` -> para crear un provider
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
@@ -214,4 +216,115 @@ Route::apiResource('productos', 'ProductoController');
 Si deseas utilizar nombres de parámetros en singular en lugar de plural para las rutas generadas, puedes usar este método. Por ejemplo: esto hará que las rutas generadas utilicen 'equipo' en lugar de 'equipos' como nombre de parámetro en las rutas.
 ```php
 Route::resource('equipos', 'EquipoController')->singularResourceParameters();
+```
+## Método __invoke()
+Cuando un controlador tiene un método __invoke(), Laravel lo tratará como un controlador invocable, lo que significa que puedes usar el controlador como si fuera una función. Esto proporciona una sintaxis concisa y clara para definir controladores que solo realizan una acción específica.
+El método __invoke() es útil cuando tienes un controlador que solo necesita manejar una acción específica, lo que hace que tu código sea más conciso y fácil de entender.
+
+## Grupo de Rutas
+Un grupo de rutas te permite agrupar un conjunto de rutas relacionadas para aplicarles middleware, prefijos de URI comunes, nombres de ruta o cualquier otra configuración que desees aplicar de manera global a ese conjunto de rutas.
+**Uso:**  Se usa cuando deseas aplicar ciertas configuraciones a un grupo de rutas, como middleware, prefijos de URI o nombres de ruta compartidos.
+**Ejemplo:**
+```php
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/perfil', 'PerfilController@show')->name('perfil');
+    Route::get('/ajustes', 'AjustesController@index')->name('ajustes');
+});
+``` 
+### Grupo de Rutas vs Route Resource
+Un grupo de rutas se utiliza para aplicar configuraciones comunes a un conjunto de rutas, mientras que Route::resource se utiliza para definir rápidamente rutas para un controlador que sigue el patrón RESTful. Puedes usarlos juntos en tu aplicación dependiendo de tus necesidades específicas. Por ejemplo, podrías envolver un Route::resource dentro de un grupo de rutas para aplicar middleware a todas las rutas generadas por Route::resource.
+
+# Vistas
+## Pasar parámetros a vistas
+Para pasar parámetros a las vistas desde el controlador en Laravel, puedes utilizar el método with() o compact() en la respuesta de la vista. Estos métodos te permiten enviar datos a la vista para que puedan ser accesibles desde el archivo de plantilla de Blade.
+### Método with()
+Aquí tienes un ejemplo de cómo pasar parámetros a una vista desde el controlador utilizando el método with():
+```php
+use Illuminate\Http\Request;
+class UserController extends Controller
+{
+    public function index()
+    {
+        $usuarios = User::all();
+        return view('usuarios.index')->with('usuarios', $usuarios);
+    }
+}
+```
+En este ejemplo, $usuarios es una colección de objetos User que queremos pasar a la vista usuarios.index. Usamos el método with() para pasar esta colección a la vista con el nombre 'usuarios'.
+También puedes pasar múltiples parámetros a la vista separándolos por coma dentro del método with():
+```php
+return view('usuarios.index')->with('usuarios', $usuarios)->with('titulo', 'Lista de usuarios');
+```
+### Método compact()
+Otra forma de pasar parámetros a las vistas es utilizando el método compact(), que toma una lista de nombres de variables y crea un array asociativo donde las claves son los nombres de las variables y los valores son los valores de esas variables:
+```php
+return view('usuarios.index', compact('usuarios', 'titulo'));
+```
+En este ejemplo, compact('usuarios', 'titulo') es equivalente a ['usuarios' => $usuarios, 'titulo' => $titulo].
+Una vez que has pasado los parámetros a la vista desde el controlador, puedes acceder a ellos en el archivo de plantilla de Blade correspondiente utilizando la sintaxis de doble corchete ({{ $nombre_variable }}). Por ejemplo:
+```php
+@foreach($usuarios as $usuario)
+    {{ $usuario->nombre }}
+@endforeach
+```
+### Método View::share(key, value): para pasar parámetros a todas las vistas
+Se utiliza para compartir datos con todas las vistas de tu aplicación. Esto significa que puedes definir ciertos datos una vez y hacer que estén disponibles para todas las vistas sin tener que pasar explícitamente esos datos a cada vista desde el controlador.
+Por ejemplo, si tienes datos que necesitas mostrar en el encabezado o pie de página de todas las páginas de tu sitio web, puedes compartir esos datos utilizando View::share() en un servicio de proveedor de Laravel, como AppServiceProvider. Esto evita que tengas que pasar esos datos desde cada controlador a cada vista, lo que puede ser tedioso y repetitivo.
+**Ejemplo práctico:**
+```php
+use Illuminate\Support\Facades\View;
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        View::share('nombre_sitio', 'Mi Sitio Web');
+    }
+}
+```
+En este ejemplo, estamos compartiendo la variable $nombre_sitio con todas las vistas de la aplicación, lo que significa que ahora puedes acceder a esta variable en cualquier vista sin tener que pasarla explícitamente desde el controlador.
+
+> Esto es útil para datos globales que necesitas en muchas partes de tu aplicación y simplifica la gestión de esos datos al compartirlos automáticamente con todas las vistas. Sin embargo, debes tener cuidado al usar View::share() para no sobrecargar las vistas con demasiados datos innecesarios, ya que esto podría afectar negativamente al rendimiento de tu aplicación.
+
+## Provider exclusivo para vistas
+Los proveedores de servicios en Laravel son clases responsables de inicializar y configurar varios componentes de la aplicación durante el proceso de arranque. Proporcionan una forma conveniente de registrar enlaces de servicios, enlaces de interfaz y configuración de cualquier componente de la aplicación.
+
+>Aquí hay algunas de las principales funciones que los proveedores de servicios realizan en Laravel:
+1. Registro de servicios: Los proveedores de servicios son responsables de registrar los servicios de la aplicación en el contenedor de servicios de Laravel. Esto incluye la configuración de enlaces de servicios, que permite a la aplicación acceder a clases o instancias específicas a través de la inyección de dependencias o el contenedor de servicios.
+2. Configuración de alias de clase: Los proveedores de servicios pueden configurar alias de clase, que son atajos que permiten acceder a clases específicas mediante un nombre corto. Esto simplifica el código al permitir que los desarrolladores utilicen nombres más cortos y legibles para acceder a clases complejas.
+3. Inicialización de configuraciones: Los proveedores de servicios pueden inicializar la configuración de la aplicación, cargar archivos de configuración y proporcionar valores predeterminados para diversas opciones de configuración.
+4. Registro de eventos y listeners: Algunos proveedores de servicios pueden registrarse en eventos y listeners de eventos en la aplicación. Esto permite que la aplicación responda a eventos específicos y realice acciones correspondientes.
+5. Integración de paquetes y bibliotecas externas: Los proveedores de servicios también se utilizan para integrar paquetes y bibliotecas externas en la aplicación Laravel. Esto puede incluir la configuración de proveedores de servicios de terceros para que funcionen de manera adecuada en el contexto de la aplicación.
+> Los proveedores de servicios son una parte fundamental de la arquitectura de Laravel y juegan un papel importante en la configuración y puesta en marcha de la aplicación. Proporcionan un punto centralizado para registrar y configurar diversos componentes de la aplicación, lo que facilita la gestión y la organización del código.
+
+Para crear un nuevo provider desde terminar, se ejecuta el comando: `$ php artisan make:provider NameServiceProvider`
+Luego para que Laravel reconozca esa clase como provider, éste se debe registrar en el archivo config/app.php en la parte del arreglo donde se agregan los providers
+```php
+return [
+    
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        // ...others providers
+        App\Providers\NameServiceProvider::class,
+    ])->toArray(),
+]
+```
+
+## View Composer
+En Laravel, los View Composers son una forma de compartir datos con varias vistas de manera eficiente y reutilizable. Permiten ejecutar lógica específica antes de que una vista sea renderizada, lo que te permite pasar datos dinámicos a tus vistas de forma automática sin tener que hacerlo manualmente en cada método del controlador.
+
+Aquí tienes un resumen de para qué sirve y cómo se utiliza un View Composer en Laravel:
+1. Compartir datos con vistas específicas: Los View Composers te permiten compartir datos con una o más vistas específicas. Esto es útil cuando necesitas que ciertos datos estén disponibles en múltiples vistas de tu aplicación.
+2. Ejecutar lógica antes de renderizar la vista: Puedes ejecutar cualquier lógica necesaria para obtener los datos que deseas compartir con la vista dentro de un View Composer. Esto podría incluir consultas a la base de datos u operaciones de procesamiento de datos.
+3. Organización del código: Los View Composers te permiten mantener tu código limpio y organizado al separar la lógica de presentación de la lógica de negocio. Esto hace que tus controladores sean más delgados y tus vistas más simples y fáciles de entender.
+4. Reutilización de código: Puedes reutilizar View Composers en diferentes partes de tu aplicación para compartir los mismos datos con múltiples vistas. Esto evita la duplicación de código y facilita la gestión de datos compartidos.
+5. Flexibilidad: Los View Composers te ofrecen flexibilidad en cuanto a cuándo y dónde se comparten los datos con las vistas. Puedes definir View Composers en cualquier lugar, como en archivos de proveedores de servicios, archivos de rutas o incluso directamente en tus archivos de rutas web.
+Aquí tienes un ejemplo básico de cómo se utiliza un View Composer en Laravel:
+```php
+use Illuminate\Support\Facades\View;
+View::composer('mi.vista', function ($view) {
+    $view->with('nombre', 'John Doe');
+});
+```
+En caso de crearse un archivo en **app/View/Composers/ArchivoComposer.php**, se debe especificar en AppServiceProvider o algún otro archivo similar (ViewServiceProvider) que dicho composer creado se aplique a ciertas rutas, **por ejemplo:**
+```php
+View::composer('posts.*', ArchivoComposer::class);
 ```

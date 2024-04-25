@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Ruta la cual el controlador emplea el método __invoke
+Route::get('/', HomeController::class)->name('home');
 
 /*
 // ruta con nombre
@@ -74,11 +75,22 @@ Route::put('posts/{id}', [PostController::class, 'update'])->name('posts.update'
 // Ruta para eliminar un post
 Route::delete('posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 */
-Route::resource('posts2', PostController::class)
-    ->only(['index', 'create', 'store', 'show', 'edit']) // rutas a tener en cuenta
-    ->except(['update', 'destroy']) // rutas a omitir
-    ->parameters(['posts2' => 'post'])
-    ->names('posts');
+// Route::resource('posts2', PostController::class)
+//     ->only(['index', 'create', 'store', 'show', 'edit']) // rutas a tener en cuenta
+//     ->except(['update', 'destroy']) // rutas a omitir
+//     ->parameters(['posts2' => 'post'])
+//     ->names('posts');
 
 // Si se necesitan rutas para una api, se emplea Route::apiResource()
 // Route::apiResource('posts', PostController::class);
+
+// Grupo de Rutas
+Route::prefix('posts')->name('posts.')->controller(PostController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/', 'store')->name('store');
+    Route::get('/{post}', 'show')->name('show');
+    Route::get('/{post}/edit', 'edit')->name('edit');
+    Route::put('/{post}', 'update')->name('update');
+    Route::delete('/{post}', 'destroy')->name('destroy');
+});

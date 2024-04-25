@@ -8,12 +8,12 @@ class PostController extends Controller
 {
     public function index()
     {
-        return "Listado de posts";
+        return view('posts.index');
     }
 
     public function create()
     {
-        return "Formulario para crear un nuevo post";
+        return view('posts.create');
     }
 
     public function store(Request $request)
@@ -21,23 +21,23 @@ class PostController extends Controller
         return "Guardar el nuevo post";
     }
 
-    public function show(string $id)
+    public function show($post)
     {
-        return "Detalle de post {$id}";
+        return view('posts.show', compact('post'));
     }
 
-    public function edit(string $id)
+    public function edit($post)
     {
-        return "Editar el post {$id}";
+        return view('posts.edit', compact('post'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $post)
     {
-        return "Actualizar el post {$id}";
+        return "Actualizar el post {$post}";
     }
 
-    public function destroy(string $id)
+    public function destroy($post)
     {
-        return "Eliminar el post {$id}";
+        return "Eliminar el post {$post}";
     }
 }
