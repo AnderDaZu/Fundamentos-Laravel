@@ -218,3 +218,16 @@ Route::resource('equipos', 'EquipoController')->singularResourceParameters();
 ## Método __invoke()
 Cuando un controlador tiene un método __invoke(), Laravel lo tratará como un controlador invocable, lo que significa que puedes usar el controlador como si fuera una función. Esto proporciona una sintaxis concisa y clara para definir controladores que solo realizan una acción específica.
 El método __invoke() es útil cuando tienes un controlador que solo necesita manejar una acción específica, lo que hace que tu código sea más conciso y fácil de entender.
+
+## Grupo de Rutas
+Un grupo de rutas te permite agrupar un conjunto de rutas relacionadas para aplicarles middleware, prefijos de URI comunes, nombres de ruta o cualquier otra configuración que desees aplicar de manera global a ese conjunto de rutas.
+**Uso:**  Se usa cuando deseas aplicar ciertas configuraciones a un grupo de rutas, como middleware, prefijos de URI o nombres de ruta compartidos.
+**Ejemplo:**
+```php
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/perfil', 'PerfilController@show')->name('perfil');
+    Route::get('/ajustes', 'AjustesController@index')->name('ajustes');
+});
+``` 
+### Grupo de Rutas vs Route Resource
+Un grupo de rutas se utiliza para aplicar configuraciones comunes a un conjunto de rutas, mientras que Route::resource se utiliza para definir rápidamente rutas para un controlador que sigue el patrón RESTful. Puedes usarlos juntos en tu aplicación dependiendo de tus necesidades específicas. Por ejemplo, podrías envolver un Route::resource dentro de un grupo de rutas para aplicar middleware a todas las rutas generadas por Route::resource.
