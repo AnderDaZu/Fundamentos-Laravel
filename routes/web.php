@@ -59,6 +59,7 @@ Route::get('cursos/{curso}/{profesor?}', function ($curso, $profesor = null) {
 
 // Rutas necesarias para crear un crud
 // Ruta para mostrar el listado de posts
+/*
 Route::get('posts', [PostController::class, 'index'])->name('posts.index');
 // Ruta para crear un nuevo post
 Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
@@ -72,3 +73,12 @@ Route::get('posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit
 Route::put('posts/{id}', [PostController::class, 'update'])->name('posts.update');
 // Ruta para eliminar un post
 Route::delete('posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+*/
+Route::resource('posts2', PostController::class)
+    ->only(['index', 'create', 'store', 'show', 'edit']) // rutas a tener en cuenta
+    ->except(['update', 'destroy']) // rutas a omitir
+    ->parameters(['posts2' => 'post'])
+    ->names('posts');
+
+// Si se necesitan rutas para una api, se emplea Route::apiResource()
+// Route::apiResource('posts', PostController::class);

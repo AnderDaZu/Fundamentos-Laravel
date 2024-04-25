@@ -126,3 +126,92 @@ Los controladores en Laravel son una parte fundamental del patrón MVC (Modelo-V
 4. Enrutamiento claro y legible: Al usar controladores, puedes definir rutas que apunten a métodos específicos en esos controladores. Esto proporciona un enrutamiento claro y legible en tu aplicación.
 
 5. Facilita las pruebas unitarias: Al separar la lógica de negocio en controladores, es más fácil escribir pruebas unitarias para validar el comportamiento de tu aplicación. Puedes probar cada método del controlador de forma aislada para asegurarte de que funciona correctamente.
+
+## Route Resource
+Es una función en Laravel que te permite definir rápidamente todas las rutas necesarias para un controlador de recursos RESTful en tu aplicación. Un controlador de recursos es un controlador que implementa las operaciones CRUD (Crear, Leer, Actualizar, Eliminar) en tu aplicación.
+
+Cuando defines las rutas de un recurso utilizando Route::resource, Laravel automáticamente genera una serie de rutas predefinidas que corresponden a las acciones CRUD típicas. Estas rutas siguen las convenciones RESTful y están diseñadas para trabajar con métodos HTTP estándar.
+
+Las rutas generadas por Route::resource incluyen:
+- GET /recurso para mostrar una lista de recursos.
+- GET /recurso/create para mostrar el formulario de creación de un nuevo recurso.
+- POST /recurso para almacenar un nuevo recurso.
+- GET /recurso/{id} para mostrar un recurso específico.
+- GET /recurso/{id}/edit para mostrar el formulario de edición de un recurso existente.
+- PUT /recurso/{id} o PATCH /recurso/{id} para actualizar un recurso existente.
+- DELETE /recurso/{id} para eliminar un recurso existente.
+
+> Route::resource es una forma conveniente y rápida de definir rutas para un controlador de recursos en Laravel, lo que te permite mantener tu código limpio y organizado siguiendo las convenciones RESTful.
+
+### Métodos para Route Resource
+#### only()
+Este método te permite especificar qué métodos de tu controlador de recursos deben tener rutas generadas. Por ejemplo, si solo necesitas las rutas para mostrar y almacenar recursos, puedes hacer lo siguiente:
+```php
+Route::resource('articulos', 'ArticuloController')
+    ->only(['index', 'store']);
+```
+#### except(): 
+Al contrario de only(), este método te permite excluir ciertos métodos de tu controlador de recursos de tener rutas generadas. Por ejemplo, si deseas excluir la ruta de eliminación de recursos, puedes hacer lo siguiente:
+```php
+Route::resource('articulos', 'ArticuloController')
+    ->except(['destroy']);
+```
+#### parameters(): 
+Este método te permite personalizar los nombres de los parámetros utilizados en las rutas generadas. Por ejemplo, si deseas que el parámetro para el identificador de tus recursos sea diferente de "id", puedes hacer lo siguiente:
+```php
+Route::resource('articulos', 'ArticuloController')
+    ->parameters(['articulos' => 'articulo']);
+```
+#### names(): 
+Este método te permite especificar nombres personalizados para las rutas generadas. Por ejemplo, si deseas que las rutas tengan nombres específicos en lugar de los nombres predeterminados generados por Laravel, puedes hacer lo siguiente:
+```php
+Route::resource('articulos', 'ArticuloController')
+    ->names(
+        [
+            'index' => 'articulos.listado',
+            'show' => 'articulos.ver',
+            // Otros nombres personalizados...
+        ]
+    );
+```
+#### middleware(): 
+Puedes usar este método para aplicar middleware específicos a las rutas generadas. Por ejemplo, si deseas aplicar un middleware de autenticación a todas las rutas del recurso articulos, puedes hacer lo siguiente:
+```php
+Route::resource('articulos', 'ArticuloController')
+    ->middleware('auth');
+```
+#### namespace(): 
+Si tu controlador está dentro de un namespace diferente al predeterminado, puedes usar este método para especificar el namespace del controlador. Por ejemplo, si tu controlador está dentro del namespace Admin, puedes hacer lo siguiente:
+```php
+Route::resource('articulos', 'Admin\ArticuloController')
+    ->namespace('Admin');
+```
+#### prefix(): 
+Si deseas agregar un prefijo a todas las rutas generadas para un recurso, puedes usar este método. Por ejemplo, si deseas que todas las rutas del recurso articulos tengan el prefijo admin, puedes hacer lo siguiente:
+```php
+Route::resource('articulos', 'ArticuloController')
+    ->prefix('admin');
+```
+#### shallow(): 
+Este método permite que Laravel evite generar rutas anidadas cuando el recurso tiene solo un nivel de profundidad. Por ejemplo, si tienes un recurso "comentarios" anidado bajo "articulos", usar shallow() evitará la generación de rutas anidadas y simplificará las rutas generadas.
+```php
+Route::resource('articulos.comentarios', 'ComentarioController')
+    ->shallow();
+```
+#### scoped(): 
+Este método te permite definir ámbitos personalizados para las rutas de tu controlador de recursos. Puedes usarlo para aplicar restricciones adicionales a las rutas generadas. Por ejemplo, en este ejemplo, se personaliza el parámetro de ruta de usuario a 'username' en lugar del 'id' predeterminado. También se excluye la ruta 'show', que normalmente muestra un usuario individual.:
+```php
+Route::resource('usuarios', 'UsuarioController')
+    ->scoped(['usuario' => 'username'])
+    ->except(['show']);
+```
+#### api(): 
+Si deseas generar rutas de recursos para una API RESTful, puedes usar el método api() en lugar de resource(). Esto aplicará algunos comportamientos específicos de API, como la respuesta en formato JSON. Por ejemplo, este método genera rutas para un controlador de recursos, pero configura algunas opciones específicas de API de forma predeterminada.:
+```php
+Route::apiResource('productos', 'ProductoController');
+```
+#### singularResourceParameters(): 
+Si deseas utilizar nombres de parámetros en singular en lugar de plural para las rutas generadas, puedes usar este método. Por ejemplo: esto hará que las rutas generadas utilicen 'equipo' en lugar de 'equipos' como nombre de parámetro en las rutas.
+```php
+Route::resource('equipos', 'EquipoController')->singularResourceParameters();
+```
