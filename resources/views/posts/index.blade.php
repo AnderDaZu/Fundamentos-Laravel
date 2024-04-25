@@ -9,8 +9,20 @@
 <body>
     <h1>Aquí se mostrarán los posts</h1>
 
+    {{-- Directivas @env @production --}}
+    @env('local')
+        <p>Estamos en local</p>
+    @endenv
+
+    @env('production')
+        <p>Estamos en producción 1.0</p>
+    @endenv
+    @production
+        <p>Estamos en producción 2.0</p>
+    @endproduction
+
     {{-- Directivas Condicionales --}}
-    @if (true)
+    {{-- @if (true)
         <p>Este mensaje se mostrará si el valor de la condicional es verdadero.</p>
     @else
         <p>Este mensaje se mostrará si el valor de la condicional es falso.</p>
@@ -28,7 +40,7 @@
 
     @empty($post45)
         <p>La variable no existe o no tiene un valor asignado.</p>
-    @endempty
+    @endempty --}}
 
     {{-- <script>
         let posts_1 = {!! json_encode($posts) !!};

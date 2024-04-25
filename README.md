@@ -417,3 +417,17 @@ Verifica si una variable está vacía. Esto incluye valores nulos, cadenas vací
 ```
 
 > Estas directivas Blade proporcionan una forma conveniente y legible de realizar operaciones condicionales y verificar la existencia y el estado de las variables en las plantillas Blade de Laravel. Son muy útiles para personalizar la salida de las vistas en función de datos dinámicos y condiciones específicas.
+
+## Directiva @env
+La directiva Blade @env en Laravel te permite condicionar el contenido de tus vistas basado en el entorno de tu aplicación. Puedes usar esta directiva para mostrar u ocultar ciertas partes de tu vista dependiendo del entorno en el que se esté ejecutando tu aplicación.
+La sintaxis general de @env es la siguiente:
+```blade
+@env('entorno')
+    // Contenido a mostrar si la aplicación está en el entorno especificado
+@endenv
+
+@env(['entorno1', 'entorno2'])
+    // Contenido a mostrar si la aplicación está en cualquiera de los entornos especificados
+@endenv
+```
+> Esta directiva Blade es útil para condicionar el contenido de tus vistas en función del entorno de tu aplicación, lo que te permite personalizar la salida según sea necesario para el desarrollo, pruebas o producción.
