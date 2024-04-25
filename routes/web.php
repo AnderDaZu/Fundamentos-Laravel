@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Ruta la cual el controlador emplea el método __invoke
+Route::get('/', HomeController::class)->name('home');
 
 /*
 // ruta con nombre

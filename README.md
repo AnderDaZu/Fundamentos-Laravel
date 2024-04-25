@@ -215,3 +215,6 @@ Si deseas utilizar nombres de parámetros en singular en lugar de plural para la
 ```php
 Route::resource('equipos', 'EquipoController')->singularResourceParameters();
 ```
+## Método __invoke()
+Cuando un controlador tiene un método __invoke(), Laravel lo tratará como un controlador invocable, lo que significa que puedes usar el controlador como si fuera una función. Esto proporciona una sintaxis concisa y clara para definir controladores que solo realizan una acción específica.
+El método __invoke() es útil cuando tienes un controlador que solo necesita manejar una acción específica, lo que hace que tu código sea más conciso y fácil de entender.
