@@ -349,3 +349,16 @@ Blade es el motor de plantillas predeterminado de Laravel, diseñado para hacer 
 - Debes tener cuidado al usar {!! !!} para evitar ataques XSS. Asegúrate de que el contenido que estás mostrando es seguro y proviene de una fuente confiable.
 
 > En resumen, {{ }} se utiliza para mostrar contenido de forma segura, escapando automáticamente cualquier carácter HTML especial, mientras que {!! !!} se utiliza para mostrar contenido HTML sin escapar, lo que puede ser útil cuando necesitas mostrar HTML generado dinámicamente en tus vistas. Es importante entender la diferencia entre estas dos formas y utilizar la más adecuada según las necesidades de tu aplicación y la seguridad del contenido que estás mostrando.
+
+## Evitar conflicto con sintaxis de frameworks de js
+La sintaxis @{{ $variable }} en Laravel Blade se utiliza para imprimir literalmente las llaves dobles {{ }} en la salida HTML de la vista, sin procesar el contenido dentro de ellas como una variable de Blade.
+Por defecto, en las vistas de Blade, si escribes {{ $variable }}, Laravel procesará y evaluará la variable $variable y luego imprimirá su valor en la salida HTML. Sin embargo, en algunos casos, puede que necesites imprimir las llaves dobles literalmente sin que Laravel las procese.
+Por ejemplo, si estás trabajando con un framework de JavaScript que también utiliza la sintaxis {{ }} para sus plantillas, puedes encontrarte con un conflicto en las vistas de Blade. En este caso, puedes usar @{{ }} para evitar el conflicto y asegurarte de que las llaves dobles se impriman literalmente en la salida HTML.
+**Ejemplo:**
+```js
+var appData = {
+    name: "@{{ $name }}",
+    age: {{ $age }},
+    // Otros datos
+};
+```

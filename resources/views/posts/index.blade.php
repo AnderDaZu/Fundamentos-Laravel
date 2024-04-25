@@ -14,5 +14,15 @@
     <p>---------</p>
     {{-- forma de mostrar variables en blade -> Sin escapado --}}
     {!! $tag2 !!}
+
+    {{-- forma para evitar el conflicto y asegurarte si estás trabajando con un framework de JavaScript 
+        que también utiliza la sintaxis de blade, dicho código de js no se vea afectado --}}
+    {{-- <script>
+        var appData = {
+            name: "@{{ $name }}",
+            age: {{ $age }},
+            // Otros datos
+        };
+    </script> --}}
 </body>
 </html>
