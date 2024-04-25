@@ -24,6 +24,8 @@ Reforzando los fundamentos de Laravel
 
 `php artisan make:controller PostController -r` -> para crear un controlador con los diferentes métodos  (index, create, store, etc)
 
+`php artisan make:provider ViewServiceProvider` -> para crear un provider
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
@@ -282,3 +284,26 @@ class AppServiceProvider extends ServiceProvider
 En este ejemplo, estamos compartiendo la variable $nombre_sitio con todas las vistas de la aplicación, lo que significa que ahora puedes acceder a esta variable en cualquier vista sin tener que pasarla explícitamente desde el controlador.
 
 > Esto es útil para datos globales que necesitas en muchas partes de tu aplicación y simplifica la gestión de esos datos al compartirlos automáticamente con todas las vistas. Sin embargo, debes tener cuidado al usar View::share() para no sobrecargar las vistas con demasiados datos innecesarios, ya que esto podría afectar negativamente al rendimiento de tu aplicación.
+
+## Provider exclusivo para vistas
+Los proveedores de servicios en Laravel son clases responsables de inicializar y configurar varios componentes de la aplicación durante el proceso de arranque. Proporcionan una forma conveniente de registrar enlaces de servicios, enlaces de interfaz y configuración de cualquier componente de la aplicación.
+
+>Aquí hay algunas de las principales funciones que los proveedores de servicios realizan en Laravel:
+1. Registro de servicios: Los proveedores de servicios son responsables de registrar los servicios de la aplicación en el contenedor de servicios de Laravel. Esto incluye la configuración de enlaces de servicios, que permite a la aplicación acceder a clases o instancias específicas a través de la inyección de dependencias o el contenedor de servicios.
+2. Configuración de alias de clase: Los proveedores de servicios pueden configurar alias de clase, que son atajos que permiten acceder a clases específicas mediante un nombre corto. Esto simplifica el código al permitir que los desarrolladores utilicen nombres más cortos y legibles para acceder a clases complejas.
+3. Inicialización de configuraciones: Los proveedores de servicios pueden inicializar la configuración de la aplicación, cargar archivos de configuración y proporcionar valores predeterminados para diversas opciones de configuración.
+4. Registro de eventos y listeners: Algunos proveedores de servicios pueden registrarse en eventos y listeners de eventos en la aplicación. Esto permite que la aplicación responda a eventos específicos y realice acciones correspondientes.
+5. Integración de paquetes y bibliotecas externas: Los proveedores de servicios también se utilizan para integrar paquetes y bibliotecas externas en la aplicación Laravel. Esto puede incluir la configuración de proveedores de servicios de terceros para que funcionen de manera adecuada en el contexto de la aplicación.
+> Los proveedores de servicios son una parte fundamental de la arquitectura de Laravel y juegan un papel importante en la configuración y puesta en marcha de la aplicación. Proporcionan un punto centralizado para registrar y configurar diversos componentes de la aplicación, lo que facilita la gestión y la organización del código.
+
+Para crear un nuevo provider desde terminar, se ejecuta el comando: `$ php artisan make:provider NameServiceProvider`
+Luego para que Laravel reconozca esa clase como provider, éste se debe registrar en el archivo config/app.php en la parte del arreglo donde se agregan los providers
+```php
+return [
+    
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        // ...others providers
+        App\Providers\NameServiceProvider::class,
+    ])->toArray(),
+]
+```
