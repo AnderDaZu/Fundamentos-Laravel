@@ -20,6 +20,10 @@ Reforzando los fundamentos de Laravel
 
 `php artisan route:clear` -> para borrar la caché de rutas
 
+`php artisan make:controller PostController` -> para crear un controlador
+
+`php artisan make:controller PostController -r` -> para crear un controlador con los diferentes métodos  (index, create, store, etc)
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
@@ -109,3 +113,16 @@ Almacenar las rutas en caché en Laravel ofrece varias ventajas:
 Para almacenar las rutas en caché en Laravel, puedes utilizar el comando artisan route:cache. Este comando generará un archivo optimizado que contiene todas las rutas definidas en tu aplicación, y Laravel utilizará este archivo en lugar de analizar el archivo de rutas en cada solicitud.
 
 Es importante tener en cuenta que, después de hacer cambios en las rutas de tu aplicación, debes ejecutar **php artisan route:clear** para borrar la caché de rutas y luego ejecutar nuevamente **php artisan route:cache** para que las nuevas rutas se reflejen en la caché.
+
+# Controladores
+Los controladores en Laravel son una parte fundamental del patrón MVC (Modelo-Vista-Controlador) que Laravel sigue. Ayudan a mantener tu código limpio, organizado y fácil de mantener, al tiempo que proporcionan una capa intermedia entre la lógica de presentación y la lógica de negocio de tu aplicación.
+
+1. Separación de preocupaciones: Los controladores permiten separar la lógica de presentación de la lógica de negocio. Esto ayuda a mantener tu código organizado y más fácil de mantener.
+
+2. Manejo de solicitudes: Los controladores manejan las solicitudes HTTP entrantes y coordinan la respuesta adecuada. Esto incluye procesar datos de entrada, interactuar con el modelo de datos y devolver una respuesta al usuario.
+
+3. Reutilización de código: Los controladores permiten reutilizar la lógica de negocio en diferentes partes de tu aplicación. Por ejemplo, puedes tener un controlador de usuarios que maneje todas las operaciones relacionadas con los usuarios, como registro, inicio de sesión, actualización de perfil, etc.
+
+4. Enrutamiento claro y legible: Al usar controladores, puedes definir rutas que apunten a métodos específicos en esos controladores. Esto proporciona un enrutamiento claro y legible en tu aplicación.
+
+5. Facilita las pruebas unitarias: Al separar la lógica de negocio en controladores, es más fácil escribir pruebas unitarias para validar el comportamiento de tu aplicación. Puedes probar cada método del controlador de forma aislada para asegurarte de que funciona correctamente.

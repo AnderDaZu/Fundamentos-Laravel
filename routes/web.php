@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-    // return route('cursos.show', 1);
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 /*
 // ruta con nombre
@@ -59,31 +58,17 @@ Route::get('cursos/{curso}/{profesor?}', function ($curso, $profesor = null) {
 */
 
 // Rutas necesarias para crear un crud
-// Ruta para mostrar el listado de cursos
-Route::get('cursos', function () {
-    return "Listado de cursos";
-});
-// Ruta para crear un nuevo curso
-Route::get('cursos/create', function () {
-    return "Formulario para crear un nuevo curso";
-});
-// Ruta para guardar un nuevo curso
-Route::post('cursos', function () {
-    return "Guardar el nuevo curso";
-});
-// Ruta para mostrar detalle del curso
-Route::get('cursos/{id}', function ($id) {
-    return "Detalle {$id}";
-});
-// Ruta para editar un curso
-Route::get('cursos/{id}/edit', function ($id) {
-    return "Editar el curso {$id}";
-});
-// Ruta para actualizar un curso
-Route::put('cursos/{id}', function ($id) {
-    return "Actualizar el curso {$id}";
-});
-// Ruta para eliminar un curso
-Route::delete('cursos/{id}', function ($id) {
-    return "Eliminar el curso {$id}";
-});
+// Ruta para mostrar el listado de posts
+Route::get('posts', [PostController::class, 'index'])->name('posts.index');
+// Ruta para crear un nuevo post
+Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
+// Ruta para guardar un nuevo post
+Route::post('posts', [PostController::class, 'store'])->name( 'posts.store' );
+// Ruta para mostrar detalle del post
+Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
+// Ruta para editar un post
+Route::get('posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
+// Ruta para actualizar un post
+Route::put('posts/{id}', [PostController::class, 'update'])->name('posts.update');
+// Ruta para eliminar un post
+Route::delete('posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
