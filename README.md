@@ -374,3 +374,46 @@ console.log(datos);
 ```
 En este ejemplo, $datos se convierte automáticamente en su representación JSON y se asigna a la variable datos en JavaScript. Luego, puedes usar console.log() para imprimir los datos en la consola del navegador.
 Esta es una forma conveniente y segura de pasar datos de PHP a JavaScript en tus vistas de Blade, ya que Laravel se encarga de garantizar que los datos se conviertan en JSON de manera adecuada y segura. Además, esto te ayuda a evitar problemas de seguridad, como la inyección de código malicioso, al garantizar que los datos se escapen correctamente antes de ser impresos en la salida HTML.
+
+## Directivas Condicionales
+### Directiva @if()
+Esta directiva permite ejecutar un bloque de código si una expresión dada evalúa como verdadera.
+**Ejemplo:**
+```blade
+@if($usuario->activo)
+    El usuario está activo.
+@else
+    El usuario está inactivo.
+@endif
+```
+### Directiva @unless()
+Similar a @if, pero ejecuta un bloque de código si una expresión dada evalúa como falsa.
+**Ejemplo:**
+```blade
+@unless($usuario->premium)
+    No eres usuario premium.
+@endunless
+```
+### Directiva @isset() 
+Verifica si una variable está definida y no es nula.
+**Ejemplo:**
+```blade
+@isset($usuario->nombre)
+    El nombre del usuario es {{ $usuario->nombre }}.
+@endisset
+```
+### Directiva @empty() 
+Verifica si una variable está vacía. Esto incluye valores nulos, cadenas vacías, matrices vacías, objetos vacíos y variables no definidas.
+**Ejemplo:**
+```blade
+@empty($usuarios)
+    No hay usuarios disponibles.
+@else
+    Lista de usuarios:
+    @foreach($usuarios as $usuario)
+        {{ $usuario->nombre }},
+    @endforeach
+@endempty
+```
+
+> Estas directivas Blade proporcionan una forma conveniente y legible de realizar operaciones condicionales y verificar la existencia y el estado de las variables en las plantillas Blade de Laravel. Son muy útiles para personalizar la salida de las vistas en función de datos dinámicos y condiciones específicas.

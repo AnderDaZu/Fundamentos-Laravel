@@ -9,11 +9,32 @@
 <body>
     <h1>Aquí se mostrarán los posts</h1>
 
-    <script>
+    {{-- Directivas Condicionales --}}
+    @if (true)
+        <p>Este mensaje se mostrará si el valor de la condicional es verdadero.</p>
+    @else
+        <p>Este mensaje se mostrará si el valor de la condicional es falso.</p>
+    @endif
+
+    @unless (false)
+        <p>Le has pasado el valor de false a la directiva unless.</p>
+    @endunless
+
+    @isset($marca)
+        <p>La variable existe y tiene un valor asignado</p>
+    @else
+        <p>La variable no existe o no tiene un valor asignado.</p>
+    @endisset
+
+    @empty($post45)
+        <p>La variable no existe o no tiene un valor asignado.</p>
+    @endempty
+
+    {{-- <script>
         let posts_1 = {!! json_encode($posts) !!};
         let posts_2 = @json($posts); // forma recomendada para interactuar con blade y js
         console.log(posts_2);
-    </script>
+    </script> --}}
 
     {{-- forma de mostrar variables en blade -> Escapado automático --}}
     {{-- {{ $tag1 }} --}}
