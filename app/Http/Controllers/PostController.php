@@ -8,9 +8,24 @@ class PostController extends Controller
 {
     public function index()
     {
-        $tag1 = '<p>Esto es un parrafo</p>';
-        $tag2 = '<p>Esto es otro parrafo</p>';
-        return view('posts.index', compact('tag1', 'tag2'));
+        // $tag1 = '<p>Esto es un parrafo</p>';
+        // $tag2 = '<p>Esto es otro parrafo</p>';
+
+        $posts = [
+            [
+                'title' => 'Post 1',
+                'content' => 'Contenido del post 1'
+            ],
+            [
+                'title' => 'Post 2',
+                'content' => 'Contenido del post 2'
+            ],
+            [
+                'title' => 'Post 3',
+                'content' => 'Contenido del post 3'
+            ]
+        ];
+        return view('posts.index', compact('posts'));
     }
 
     public function create()

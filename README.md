@@ -362,3 +362,15 @@ var appData = {
     // Otros datos
 };
 ```
+
+## Directiva @json()
+La directiva Blade @json en Laravel se utiliza para convertir automáticamente una variable de PHP en una representación JSON válida. Esta directiva es útil cuando necesitas pasar datos de PHP a JavaScript en tus vistas de Blade de una manera segura y conveniente.
+Cuando utilizas @json en tu vista de Blade, Laravel convierte automáticamente la variable proporcionada en su representación JSON y la imprime en la salida HTML.
+Por ejemplo, supongamos que tienes una variable de PHP llamada $datos que contiene un array asociativo que deseas pasar a JavaScript. Puedes utilizar la directiva @json para convertir este array en JSON y hacerlo accesible en tu código JavaScript.
+**Ejemplo:**
+```js
+let datos = @json($datos);
+console.log(datos);
+```
+En este ejemplo, $datos se convierte automáticamente en su representación JSON y se asigna a la variable datos en JavaScript. Luego, puedes usar console.log() para imprimir los datos en la consola del navegador.
+Esta es una forma conveniente y segura de pasar datos de PHP a JavaScript en tus vistas de Blade, ya que Laravel se encarga de garantizar que los datos se conviertan en JSON de manera adecuada y segura. Además, esto te ayuda a evitar problemas de seguridad, como la inyección de código malicioso, al garantizar que los datos se escapen correctamente antes de ser impresos en la salida HTML.
