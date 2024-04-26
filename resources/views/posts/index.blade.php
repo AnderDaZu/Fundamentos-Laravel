@@ -9,8 +9,18 @@
 <body>
     <h1>Aquí se mostrarán los posts</h1>
 
+    {{-- Directiva @foreach --}}
+    <ul>
+        @foreach ($posts as $post)
+            <li>
+                <h2>{{ $post['title'] }}</h2>
+                <p>{{ $post['content'] }}</p>
+            </li>
+        @endforeach
+    </ul>
+
     {{-- Directiva @switch --}}
-    @switch($dia)
+    {{-- @switch($dia)
         @case(1)
             <p>Lunes</p>
             @break
@@ -34,7 +44,7 @@
             @break
         @default
             <p>No es un diá de la semana</p>
-    @endswitch
+    @endswitch --}}
 
     {{-- Directivas @env @production --}}
     {{-- @env('local')

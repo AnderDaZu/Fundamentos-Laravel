@@ -451,3 +451,14 @@ Aquí tienes un ejemplo básico de cómo usar @switch en una vista Blade:
 @endswitch
 ```
 El uso de la directiva Blade @switch puede hacer que tu código sea más legible y conciso cuando necesitas realizar una comparación de múltiples casos en tus vistas Blade. Es una forma conveniente de escribir estructuras de control switch directamente en tus plantillas sin tener que escribir código PHP dentro de ellas.
+
+## Directiva @foreach
+En Laravel Blade, la directiva @foreach es una herramienta poderosa que te permite iterar sobre una colección de elementos y ejecutar un bloque de código para cada elemento de la colección. Es una forma conveniente de generar contenido dinámico en tus vistas Blade, especialmente cuando trabajas con conjuntos de datos que pueden variar en tamaño.
+La sintaxis básica de la directiva @foreach es la siguiente:
+```blade
+@foreach($coleccion as $elemento)
+    <!-- Código HTML o Blade que se repetirá para cada elemento -->
+    {{ $elemento }}
+@endforeach
+```
+> La directiva @foreach es útil cuando necesitas mostrar una lista de elementos, como resultados de consultas de base de datos, elementos de un arreglo o cualquier otra colección de datos en tus vistas Blade. Te permite generar dinámicamente contenido HTML basado en los datos disponibles en tu aplicación.
