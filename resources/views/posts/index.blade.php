@@ -9,17 +9,42 @@
 <body>
     <h1>Aquí se mostrarán los posts</h1>
 
-    {{-- Directiva @for --}}
+    {{-- Directiva @continue --}}
     @for ($i = 1; $i <= $count; $i++)
+        
+        {{-- opción 1 y recomendada --}}
+        @continue($i % 3 == 0)
+        {{-- opción 2 --}}
+        {{-- @if ($i % 3 == 0)
+            @continue
+        @endif --}}
+        
+        <p>{{ $i }}</p>
+    @endfor
+
+    {{-- Directiva @break --}}
+    @for ($i = 1; $i <= $count; $i++)
+        {{-- opción 1 y recomendada --}}
+        @break($i == 5)
+        {{-- opción 2 --}}
+        {{-- @if ($i == 5)
+            @break
+        @endif --}}
+        
+        <p>{{ $i }}</p>
+    @endfor
+
+    {{-- Directiva @for --}}
+    {{-- @for ($i = 1; $i <= $count; $i++)
         <p>
             @for ($j = 1; $j <= $i; $j++)
                 *
             @endfor
         </p>
-    @endfor
+    @endfor --}}
 
     {{-- Directiva @while --}}
-    @php
+    {{-- @php
         $i = 0;
     @endphp
 
@@ -28,7 +53,7 @@
         @php
             $i++;
         @endphp
-    @endwhile   
+    @endwhile    --}}
 
     {{-- Directiva @forelse --}}
     {{-- @forelse ($post as $post)

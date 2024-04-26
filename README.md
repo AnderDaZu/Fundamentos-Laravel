@@ -500,3 +500,32 @@ La directiva @while te permite ejecutar un bucle while en tus vistas Blade. Te p
 @endwhile
 ```
 > Estas directivas son útiles cuando necesitas generar contenido dinámico basado en datos o realizar operaciones repetitivas en tus vistas Blade. Sin embargo, debes tener cuidado de no sobrecargar tus vistas con lógica de presentación compleja. Si necesitas realizar operaciones más complejas, es recomendable mover la lógica a los controladores o servicios de Laravel y pasar los datos necesarios a tus vistas Blade de manera más limpia y organizada.
+
+## Directivas @continue y @break
+En Laravel Blade, las directivas @continue y @break son utilizadas para controlar el flujo de ejecución dentro de bucles @foreach, @for y @while en tus vistas Blade.
+### La directiva @continue 
+Se utiliza para omitir la iteración actual en un bucle y continuar con la siguiente iteración. Esto significa que si se encuentra una directiva @continue dentro de un bucle, el código restante dentro de esa iteración será ignorado y el bucle pasará a la siguiente iteración.
+**Ejemplo de uso de @continue:**
+```blade
+@foreach($usuarios as $usuario)
+    @if ($usuario->estado == 'inactivo')
+        @continue
+    @endif
+    {{ $usuario->nombre }}
+@endforeach
+```
+En este ejemplo, si el estado del usuario es "inactivo", se omitirá la impresión del nombre del usuario y se pasará a la siguiente iteración del bucle.
+### La directiva @break 
+Se utiliza para salir completamente del bucle en el que se encuentra y continuar con la ejecución del código fuera del bucle. Esto significa que cuando se encuentra una directiva @break dentro de un bucle, el bucle se terminará inmediatamente y el código continuará ejecutándose después del bucle.
+**Ejemplo de uso de @break:**
+```blade
+@foreach($usuarios as $usuario)
+    @if ($usuario->id == $idBuscado)
+        {{ $usuario->nombre }}
+        @break
+    @endif
+@endforeach
+```
+En este ejemplo, una vez que se encuentra el usuario con el ID buscado, se imprime su nombre y luego se sale del bucle utilizando @break. Esto evita que el bucle siga iterando innecesariamente una vez que se ha encontrado el usuario buscado.
+
+> En resumen, @continue se utiliza para omitir la iteración actual y pasar a la siguiente iteración en un bucle, mientras que @break se utiliza para salir completamente del bucle y continuar con la ejecución del código fuera del bucle. Estas directivas son útiles para controlar el flujo de ejecución dentro de bucles en tus vistas Blade.
