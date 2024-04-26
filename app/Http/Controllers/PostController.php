@@ -25,9 +25,10 @@ class PostController extends Controller
                 'content' => 'Contenido del post 3'
             ]
         ];
-        $dia = 10;
+        // $dia = 10;
+        $count = 10;
 
-        return view('posts.index', compact('posts', 'dia'));
+        return view('posts.index', compact('posts', 'count'));
     }
 
     public function create()

@@ -477,3 +477,26 @@ Aquí tienes un ejemplo de cómo se utiliza @forelse en una vista Blade:
 </ul>
 ```
 > La principal diferencia entre @forelse y @foreach es que @forelse maneja automáticamente el caso en que la colección esté vacía, lo que elimina la necesidad de realizar una comprobación adicional antes de iterar sobre la colección. Esto hace que el código sea más conciso y fácil de leer cuando trabajas con colecciones que pueden estar vacías.
+ ## Directivas @for y @while
+En Laravel Blade, las directivas @for y @while son estructuras de control que te permiten realizar bucles for y while directamente en tus vistas Blade. Estas directivas proporcionan una forma conveniente de generar contenido dinámico en tus plantillas sin necesidad de escribir código PHP directamente en ellas.
+### Directiva @for:
+La directiva @for te permite ejecutar un bucle for en tus vistas Blade. Te permite iterar sobre un rango de valores específico y ejecutar un bloque de código repetidamente.
+```blade
+@for ($i = 0; $i < 5; $i++)
+    <p>{{ $i }}</p>
+@endfor
+```
+### Directiva @while:
+La directiva @while te permite ejecutar un bucle while en tus vistas Blade. Te permite ejecutar un bloque de código repetidamente mientras se cumpla una condición específica.
+```blade
+@php
+    $i = 0;
+@endphp
+@while ($i < 5)
+    <p>{{ $i }}</p>
+    @php
+        $i++;
+    @endphp
+@endwhile
+```
+> Estas directivas son útiles cuando necesitas generar contenido dinámico basado en datos o realizar operaciones repetitivas en tus vistas Blade. Sin embargo, debes tener cuidado de no sobrecargar tus vistas con lógica de presentación compleja. Si necesitas realizar operaciones más complejas, es recomendable mover la lógica a los controladores o servicios de Laravel y pasar los datos necesarios a tus vistas Blade de manera más limpia y organizada.

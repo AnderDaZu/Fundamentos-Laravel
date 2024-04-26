@@ -9,15 +9,36 @@
 <body>
     <h1>Aquí se mostrarán los posts</h1>
 
+    {{-- Directiva @for --}}
+    @for ($i = 1; $i <= $count; $i++)
+        <p>
+            @for ($j = 1; $j <= $i; $j++)
+                *
+            @endfor
+        </p>
+    @endfor
+
+    {{-- Directiva @while --}}
+    @php
+        $i = 0;
+    @endphp
+
+    @while ($count >=  $i)
+        <p>*</p>
+        @php
+            $i++;
+        @endphp
+    @endwhile   
+
     {{-- Directiva @forelse --}}
-    @forelse ($post as $post)
+    {{-- @forelse ($post as $post)
         <li>
             <h2>{{ $post['title'] }}</h2>
             <p>{{ $post['content'] }}</p>
         </li>
     @empty
         <p>No hay posts para mostrar...</p>
-    @endforelse
+    @endforelse --}}
 
     {{-- Directiva @foreach --}}
     {{-- <ul>
