@@ -462,3 +462,18 @@ La sintaxis básica de la directiva @foreach es la siguiente:
 @endforeach
 ```
 > La directiva @foreach es útil cuando necesitas mostrar una lista de elementos, como resultados de consultas de base de datos, elementos de un arreglo o cualquier otra colección de datos en tus vistas Blade. Te permite generar dinámicamente contenido HTML basado en los datos disponibles en tu aplicación.
+
+## Directiva @forelse
+La directiva @forelse en Laravel Blade es una variante de la directiva @foreach, diseñada específicamente para trabajar con estructuras de datos que pueden estar vacías. Proporciona una forma conveniente de iterar sobre una colección de elementos y manejar el caso en que la colección esté vacía.
+La sintaxis de @forelse es similar a la de @foreach, pero incluye una sección adicional para manejar el caso en que la colección esté vacía.
+Aquí tienes un ejemplo de cómo se utiliza @forelse en una vista Blade:
+```blade
+<ul>
+    @forelse ($usuarios as $usuario)
+        <li>{{ $usuario->nombre }}</li>
+    @empty
+        <li>No hay usuarios</li>
+    @endforelse
+</ul>
+```
+> La principal diferencia entre @forelse y @foreach es que @forelse maneja automáticamente el caso en que la colección esté vacía, lo que elimina la necesidad de realizar una comprobación adicional antes de iterar sobre la colección. Esto hace que el código sea más conciso y fácil de leer cuando trabajas con colecciones que pueden estar vacías.

@@ -9,15 +9,25 @@
 <body>
     <h1>Aquí se mostrarán los posts</h1>
 
+    {{-- Directiva @forelse --}}
+    @forelse ($post as $post)
+        <li>
+            <h2>{{ $post['title'] }}</h2>
+            <p>{{ $post['content'] }}</p>
+        </li>
+    @empty
+        <p>No hay posts para mostrar...</p>
+    @endforelse
+
     {{-- Directiva @foreach --}}
-    <ul>
+    {{-- <ul>
         @foreach ($posts as $post)
             <li>
                 <h2>{{ $post['title'] }}</h2>
                 <p>{{ $post['content'] }}</p>
             </li>
         @endforeach
-    </ul>
+    </ul> --}}
 
     {{-- Directiva @switch --}}
     {{-- @switch($dia)
