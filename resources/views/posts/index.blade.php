@@ -17,8 +17,33 @@
 <body>
     <h1>Aquí se mostrarán los posts</h1>
 
+    {{-- Atributos adicionales --}}
+    <form action="">
+        <div>
+            <label><input type="checkbox" name="paises[]" @checked(true)>Perú</label>
+            <label><input type="checkbox" name="paises[]" @checked(false)>Colombia</label>
+            <label><input type="checkbox" name="paises[]">Chile</label>
+            <label><input type="checkbox" name="paises[]">Argentina</label>
+        </div>
+        <div>
+            <select name="ciudad">
+                <option value="">Todas las ciudades</option>
+                <option value="medellin">Medellín</option>
+                <option value="bogota" @selected(true)>Bogotá</option>
+                <option value="cali">Cali</option>
+                <option value="barranquilla">Barranquilla</option>
+                <option value="cartagena">Cartagena</option>
+            </select>
+        </div>
+        <div>
+            <input type="text" @readonly(true) @required(false)>
+            <input type="text" @readonly(false) @required(true)>
+        </div>
+        <button @disabled(true)>Enviar</button>
+    </form>
+
     {{-- Directiva @class --}}
-    <ul>
+    {{-- <ul>
         @foreach ($posts as $post)
             <li @class([
                 'color-red' => $loop->first,
@@ -27,7 +52,7 @@
                 <h2>{{ $post['title'] }}</h2>
             </li>
         @endforeach
-    </ul>
+    </ul> --}}
 
     {{-- Variable $loop --}}
     {{-- <ul>
