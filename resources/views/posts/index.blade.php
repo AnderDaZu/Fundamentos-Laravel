@@ -5,12 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Posts</title>
+    <style>
+        .color-red {
+            color: red;
+        }
+        .color-green {
+            color: green;
+        }
+    </style>
 </head>
 <body>
     <h1>Aquí se mostrarán los posts</h1>
 
-    {{-- Variable $loop --}}
+    {{-- Directiva @class --}}
     <ul>
+        @foreach ($posts as $post)
+            <li @class([
+                'color-red' => $loop->first,
+                'color-green' => $loop->last
+            ])>
+                <h2>{{ $post['title'] }}</h2>
+            </li>
+        @endforeach
+    </ul>
+
+    {{-- Variable $loop --}}
+    {{-- <ul>
         @foreach ($posts as $post)
             <li>
                 <h4>
@@ -42,7 +62,7 @@
                 </ul>
             </li>
         @endforeach
-    </ul>
+    </ul> --}}
 
     {{-- Directiva @continue --}}
     {{-- @for ($i = 1; $i <= $count; $i++) --}}

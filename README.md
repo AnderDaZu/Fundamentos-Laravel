@@ -577,3 +577,34 @@ La variable $loop en las vistas Blade de Laravel proporciona información útil 
 @endforeach
 ```
 > Estas son algunas formas comunes en las que puedes utilizar la variable $loop en tus vistas Blade para realizar acciones basadas en el estado de la iteración actual en los bucles @foreach. Es una herramienta muy útil para hacer que tus plantillas Blade sean más dinámicas y flexibles.
+
+## Directiva @class
+La directiva @class en Laravel Blade se utiliza para agregar clases CSS condicionalmente a los elementos HTML en tus plantillas Blade. Esta directiva es útil cuando necesitas aplicar clases CSS basadas en ciertas condiciones, como valores de variables o el estado de una condición.
+Aquí tienes algunos casos comunes en los que la directiva @class puede ser útil:
+1. Aplicar clases condicionales basadas en valores de variables: Puedes usar @class para aplicar clases CSS a un elemento HTML basadas en los valores de las variables en tus vistas Blade. 
+*Por ejemplo:*
+```blade
+<div class="@class(['active' => $activo, 'disabled' => !$habilitado])">
+    Contenido del elemento
+</div>
+```
+En este ejemplo, la clase active se aplicará si la variable $activo es verdadera, y la clase disabled se aplicará si $habilitado es falso.
+2. Aplicar clases condicionales basadas en valores de datos dinámicos: Puedes usar @class para aplicar clases CSS basadas en los valores de datos dinámicos provenientes de la base de datos o de otras fuentes. 
+*Por ejemplo:*
+```blade
+<ul>
+@foreach($items as $item)
+    <li class="@class(['featured' => $item->destacado, 'new' => $item->nuevo])">
+        {{ $item->nombre }}
+    </li>
+@endforeach
+</ul>
+```
+En este ejemplo, la clase featured se aplicará si $item->destacado es verdadero, y la clase new se aplicará si $item->nuevo es verdadero.
+3. Aplicar clases condicionales basadas en el contexto de la ruta actual: Puedes usar @class para aplicar clases CSS basadas en el nombre de la ruta actual o en el segmento de la URL. Por ejemplo:
+```blade
+<a href="{{ route('home') }}" class="@class(['active' => request()->routeIs('home')])">Inicio</a>
+```
+En este ejemplo, la clase active se aplicará si la ruta actual coincide con la ruta con nombre 'home'.
+
+> La directiva @class proporciona una forma conveniente y legible de aplicar clases CSS condicionalmente en tus plantillas Blade, lo que te permite mantener tu código limpio y modular. Puedes usarla en una variedad de casos para adaptar dinámicamente el aspecto de tus elementos HTML según las condiciones específicas de tu aplicación.
