@@ -17,8 +17,17 @@
 <body>
     <h1>Aquí se mostrarán los posts</h1>
 
+    {{-- Directiba @include --}}
+    @include('prueba', ['color' => 'rojo', 'num' => 1])
+    @includeIf('prueba2')
+    @includeWhen(true, 'prueba', ['color' => 'amarillo', 'num' => 2])
+    @includeWhen(false, 'prueba', ['color' => 'azul', 'num' => 3])
+    @includeUnless(false, 'prueba', ['color' => 'morado', 'num' => 4])
+    @includeUnless(true, 'prueba', ['color' => 'Rosado', 'num' => 5])
+    @includeFirst(['prueba2', 'prueba', 'posts.create'], ['color' => 'verde', 'num' => 6])
+
     {{-- Atributos adicionales --}}
-    <form action="">
+    {{-- <form action="">
         <div>
             <label><input type="checkbox" name="paises[]" @checked(true)>Perú</label>
             <label><input type="checkbox" name="paises[]" @checked(false)>Colombia</label>
@@ -40,7 +49,7 @@
             <input type="text" @readonly(false) @required(true)>
         </div>
         <button @disabled(true)>Enviar</button>
-    </form>
+    </form> --}}
 
     {{-- Directiva @class --}}
     {{-- <ul>

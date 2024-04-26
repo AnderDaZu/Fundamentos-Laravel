@@ -608,3 +608,23 @@ En este ejemplo, la clase featured se aplicará si $item->destacado es verdadero
 En este ejemplo, la clase active se aplicará si la ruta actual coincide con la ruta con nombre 'home'.
 
 > La directiva @class proporciona una forma conveniente y legible de aplicar clases CSS condicionalmente en tus plantillas Blade, lo que te permite mantener tu código limpio y modular. Puedes usarla en una variedad de casos para adaptar dinámicamente el aspecto de tus elementos HTML según las condiciones específicas de tu aplicación.
+
+## Directivas @include, @includeIf, @includeWhen, @includeUnless, @includeFirst
+Estas directivas son utilizadas en Laravel Blade para incluir otras vistas dentro de una vista principal. Esto permite la reutilización de código y la organización modular de las vistas.
+### @include:
+Esta directiva se utiliza para incluir una vista específica dentro de otra vista. Puedes usarla para incluir encabezados, pies de página, barras laterales u otros componentes reutilizables.
+Sintaxis: @include('nombre_de_la_vista').
+### @includeIf:
+Similar a @include, pero solo incluirá la vista si una condición dada es verdadera o si la vista existe.
+Sintaxis: @includeIf(condición, 'nombre_de_la_vista').
+### @includeWhen:
+Similar a @includeIf, pero permite especificar la vista a incluir como un tercer parámetro en lugar de una cadena.
+Sintaxis: @includeWhen(condición, 'nombre_de_la_vista', ['parámetros']).
+### @includeUnless:
+Similar a @includeIf, pero incluirá la vista solo si una condición dada es falsa.
+Sintaxis: @includeUnless(condición, 'nombre_de_la_vista', ['parámetros']).
+### @includeFirst:
+Esta directiva intenta incluir la primera vista que existe dentro de un conjunto dado de vistas. Es útil cuando deseas incluir una de varias vistas basadas en ciertas condiciones.
+Sintaxis: @includeFirst(['vista1', 'vista2', 'vista3']).
+
+Estas directivas son especialmente útiles para la modularización y la organización del código en tus vistas Blade. Te permiten dividir tus vistas en componentes más pequeños y reutilizables, lo que facilita el mantenimiento y la legibilidad del código. Además, las directivas @includeIf, @includeWhen, @includeUnless y @includeFirst proporcionan funcionalidades adicionales para la inclusión condicional de vistas, lo que aumenta la flexibilidad en la composición de tus vistas.
