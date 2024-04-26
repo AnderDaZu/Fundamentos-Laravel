@@ -9,30 +9,65 @@
 <body>
     <h1>Aquí se mostrarán los posts</h1>
 
+    {{-- Variable $loop --}}
+    <ul>
+        @foreach ($posts as $post)
+            <li>
+                <h4>
+                    {{ $post['title'] }} - Iteración {{ $loop->iteration }} - Indice {{ $loop->index }} - Iteraciones restantes {{ $loop->remaining }}
+                    
+                    @if($loop->first)
+                        (Primera iteración)
+                    @endif
+                        
+                    @if($loop->last)
+                        (Última itereación)
+                    @endif
+                </h4>
+    
+                <ul>
+                    @foreach ($post['tags'] as $tag)
+                        <li>
+                            {{ $tag }}
+                            
+                            @if ($loop->parent->first)
+                                (Le pertenece al primer post)
+                            @endif
+
+                            @if ($loop->parent->last)
+                                (Le pertenece al último post)
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+            </li>
+        @endforeach
+    </ul>
+
     {{-- Directiva @continue --}}
-    @for ($i = 1; $i <= $count; $i++)
+    {{-- @for ($i = 1; $i <= $count; $i++) --}}
         
         {{-- opción 1 y recomendada --}}
-        @continue($i % 3 == 0)
+        {{-- @continue($i % 3 == 0) --}}
         {{-- opción 2 --}}
         {{-- @if ($i % 3 == 0)
             @continue
         @endif --}}
         
-        <p>{{ $i }}</p>
-    @endfor
+        {{-- <p>{{ $i }}</p>
+    @endfor --}}
 
     {{-- Directiva @break --}}
-    @for ($i = 1; $i <= $count; $i++)
+    {{-- @for ($i = 1; $i <= $count; $i++) --}}
         {{-- opción 1 y recomendada --}}
-        @break($i == 5)
+        {{-- @break($i == 5) --}}
         {{-- opción 2 --}}
         {{-- @if ($i == 5)
             @break
         @endif --}}
-        
-        <p>{{ $i }}</p>
-    @endfor
+
+        {{-- <p>{{ $i }}</p>
+    @endfor --}}
 
     {{-- Directiva @for --}}
     {{-- @for ($i = 1; $i <= $count; $i++)

@@ -529,3 +529,51 @@ Se utiliza para salir completamente del bucle en el que se encuentra y continuar
 En este ejemplo, una vez que se encuentra el usuario con el ID buscado, se imprime su nombre y luego se sale del bucle utilizando @break. Esto evita que el bucle siga iterando innecesariamente una vez que se ha encontrado el usuario buscado.
 
 > En resumen, @continue se utiliza para omitir la iteración actual y pasar a la siguiente iteración en un bucle, mientras que @break se utiliza para salir completamente del bucle y continuar con la ejecución del código fuera del bucle. Estas directivas son útiles para controlar el flujo de ejecución dentro de bucles en tus vistas Blade.
+
+## Variable $loop
+La variable $loop en las vistas Blade de Laravel proporciona información útil sobre el estado actual de la iteración en un bucle @foreach. Esta variable es automáticamente disponible dentro de los bucles @foreach y contiene varias propiedades que puedes utilizar para realizar acciones basadas en el estado de la iteración actual. Aquí hay algunas formas comunes en las que puedes utilizar la variable $loop en tus vistas Blade:
+1. Contador de iteración: Puedes utilizar la propiedad index de la variable $loop para obtener el índice de la iteración actual. Esta propiedad comienza desde 0 y se incrementa en cada iteración. Es útil cuando necesitas saber la posición relativa del elemento dentro del bucle.
+```blade
+@foreach($usuarios as $usuario)
+    {{ $loop->index }}: {{ $usuario->nombre }}
+@endforeach
+```
+2. Contador de iteración empezando en 1: Si deseas que el contador de iteración comience en 1 en lugar de 0, puedes usar la propiedad iteration.
+```blade
+@foreach($usuarios as $usuario)
+    {{ $loop->iteration }}: {{ $usuario->nombre }}
+@endforeach
+```
+3. Última iteración: La propiedad last de la variable $loop indica si la iteración actual es la última en el conjunto de datos. Es útil para realizar acciones específicas en la última iteración.
+```blade
+@foreach($usuarios as $usuario)
+    {{ $usuario->nombre }}
+    @if ($loop->last)
+        Este es el último usuario.
+    @endif
+@endforeach
+```
+4. Primer iteración: La propiedad first indica si la iteración actual es la primera en el conjunto de datos. Es útil para realizar acciones específicas en la primera iteración.
+```blade
+@foreach($usuarios as $usuario)
+    @if ($loop->first)
+        Este es el primer usuario.
+    @endif
+    {{ $usuario->nombre }}
+@endforeach
+```
+5. Cantidad total de iteraciones: La propiedad count indica el número total de elementos en el conjunto de datos que estás iterando.
+```blade
+<p>Total de usuarios: {{ $usuarios->count() }}</p>
+```
+6. Parent loop: Si estás anidando bucles @foreach, puedes acceder al loop padre utilizando la propiedad parent.
+```blade
+@foreach($categorias as $categoria)
+    <h2>{{ $categoria->nombre }}</h2>
+    @foreach($categoria->productos as $producto)
+        <p>{{ $producto->nombre }}</p>
+        <span>Iteración en el bucle padre: {{ $loop->parent->iteration }}</span>
+    @endforeach
+@endforeach
+```
+> Estas son algunas formas comunes en las que puedes utilizar la variable $loop en tus vistas Blade para realizar acciones basadas en el estado de la iteración actual en los bucles @foreach. Es una herramienta muy útil para hacer que tus plantillas Blade sean más dinámicas y flexibles.

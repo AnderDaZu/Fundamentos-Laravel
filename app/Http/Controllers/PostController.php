@@ -14,15 +14,18 @@ class PostController extends Controller
         $posts = [
             [
                 'title' => 'Post 1',
-                'content' => 'Contenido del post 1'
+                'content' => 'Contenido del post 1',
+                'tags' => ['tag1', 'tag2', 'tag3']
             ],
             [
                 'title' => 'Post 2',
-                'content' => 'Contenido del post 2'
+                'content' => 'Contenido del post 2',
+                'tags' => ['tag4', 'tag5', 'tag6']
             ],
             [
                 'title' => 'Post 3',
-                'content' => 'Contenido del post 3'
+                'content' => 'Contenido del post 3',
+                'tags' => ['tag7', 'tag8', 'tag9']
             ]
         ];
         // $dia = 10;
