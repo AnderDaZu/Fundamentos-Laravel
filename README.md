@@ -26,6 +26,8 @@ Reforzando los fundamentos de Laravel
 
 `php artisan make:provider ViewServiceProvider` -> para crear un provider
 
+`php artisan make:component NameComponent` -> para crear un componente
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
@@ -628,3 +630,6 @@ Esta directiva intenta incluir la primera vista que existe dentro de un conjunto
 Sintaxis: @includeFirst(['vista1', 'vista2', 'vista3']).
 
 Estas directivas son especialmente útiles para la modularización y la organización del código en tus vistas Blade. Te permiten dividir tus vistas en componentes más pequeños y reutilizables, lo que facilita el mantenimiento y la legibilidad del código. Además, las directivas @includeIf, @includeWhen, @includeUnless y @includeFirst proporcionan funcionalidades adicionales para la inclusión condicional de vistas, lo que aumenta la flexibilidad en la composición de tus vistas.
+
+## Componentes de clases
+Los componentes de clases en Blade son una forma de generar clases HTML de manera dinámica en tus vistas de Laravel Blade. Son útiles cuando necesitas aplicar clases condicionalmente a elementos HTML basadas en ciertas condiciones o valores.

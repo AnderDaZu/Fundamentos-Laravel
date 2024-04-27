@@ -5,26 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Posts</title>
-    <style>
-        .color-red {
-            color: red;
-        }
-        .color-green {
-            color: green;
-        }
-    </style>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1>Aquí se mostrarán los posts</h1>
+    @php
+        $type = 'success';
+    @endphp
+
+    {{-- Componentes de clases --}}
+    <div class="container mx-auto mt-10">
+        <h1 class="text-center font-bold mb-4">Aquí se mostrarán los posts</h1>
+        
+        <x-alert type="info" class="pl-20"> {{-- type se define en el componente y class al no ser llamado desde el componente se establece como atributo --}}
+            {{-- slot con nombre 👇 --}}
+            <x-slot name="title">
+                Mensaje:
+            </x-slot>
+            {{-- slot principal 👇 --}}
+            Proximamente se mostrarán actualizados...
+        </x-alert>
+        ...
+        <x-alert type="danger">
+            <x-slot name="title">
+                Mensaje de error:
+            </x-slot>
+            No se logro cargar los posts...
+        </x-alert>
+        ...
+        <x-alert :type="$type"> {{-- opción 1 y recomendada --}}
+        {{-- <x-alert type="{{ $success }}"> --}} {{-- opción 2 --}}
+            <x-slot name="title">
+                Mensaje:
+            </x-slot>
+            Todo va bien
+        </x-alert>
+    </div>
 
     {{-- Directiba @include --}}
-    @include('prueba', ['color' => 'rojo', 'num' => 1])
+    {{-- @include('prueba', ['color' => 'rojo', 'num' => 1])
     @includeIf('prueba2')
     @includeWhen(true, 'prueba', ['color' => 'amarillo', 'num' => 2])
     @includeWhen(false, 'prueba', ['color' => 'azul', 'num' => 3])
     @includeUnless(false, 'prueba', ['color' => 'morado', 'num' => 4])
     @includeUnless(true, 'prueba', ['color' => 'Rosado', 'num' => 5])
-    @includeFirst(['prueba2', 'prueba', 'posts.create'], ['color' => 'verde', 'num' => 6])
+    @includeFirst(['prueba2', 'prueba', 'posts.create'], ['color' => 'verde', 'num' => 6]) --}}
 
     {{-- Atributos adicionales --}}
     {{-- <form action="">
