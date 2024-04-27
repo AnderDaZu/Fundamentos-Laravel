@@ -9,38 +9,47 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    @php
-        $type = 'success';
-    @endphp
 
-    {{-- Componentes de clases --}}
-    <div class="container mx-auto mt-10">
-        <h1 class="text-center font-bold mb-4">Aquí se mostrarán los posts</h1>
-        
-        <x-alert type="info" class="pl-20"> {{-- type se define en el componente y class al no ser llamado desde el componente se establece como atributo --}}
-            {{-- slot con nombre 👇 --}}
-            <x-slot name="title">
-                Mensaje:
-            </x-slot>
-            {{-- slot principal 👇 --}}
+    {{-- Componentes anonimos --}}
+    <x-container class="mt-4" width="4xl">
+        <x-alert>
+            <x-slot name="title"> Aquí se mostrarán los posts</x-slot>
             Proximamente se mostrarán actualizados...
         </x-alert>
-        ...
+    </x-container>
+
+    {{-- @php
+        $type = 'success';
+    @endphp --}}
+
+    {{-- Componentes de clases --}}
+    {{-- <div class="container mx-auto mt-10"> --}}
+        {{-- <h1 class="text-center font-bold mb-4">Aquí se mostrarán los posts</h1> --}}
+        
+        {{-- <x-alert type="info" class="pl-20"> type se define en el componente y class al no ser llamado desde el componente se establece como atributo --}}
+            {{-- slot con nombre 👇 --}}
+            {{-- <x-slot name="title">
+                Mensaje:
+            </x-slot> --}}
+            {{-- slot principal 👇 --}}
+            {{-- Proximamente se mostrarán actualizados... --}}
+        {{-- </x-alert> --}}
+        {{-- ...
         <x-alert type="danger">
             <x-slot name="title">
                 Mensaje de error:
             </x-slot>
             No se logro cargar los posts...
         </x-alert>
-        ...
-        <x-alert :type="$type"> {{-- opción 1 y recomendada --}}
+        ... --}}
+        {{-- <x-alert :type="$type"> opción 1 y recomendada --}}
         {{-- <x-alert type="{{ $success }}"> --}} {{-- opción 2 --}}
-            <x-slot name="title">
+            {{-- <x-slot name="title">
                 Mensaje:
             </x-slot>
-            Todo va bien
-        </x-alert>
-    </div>
+            Todo va bien --}}
+        {{-- </x-alert> --}}
+    {{-- </div> --}}
 
     {{-- Directiba @include --}}
     {{-- @include('prueba', ['color' => 'rojo', 'num' => 1])
