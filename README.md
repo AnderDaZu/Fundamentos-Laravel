@@ -633,3 +633,40 @@ Estas directivas son especialmente útiles para la modularización y la organiza
 
 ## Componentes de clases
 Los componentes de clases en Blade son una forma de generar clases HTML de manera dinámica en tus vistas de Laravel Blade. Son útiles cuando necesitas aplicar clases condicionalmente a elementos HTML basadas en ciertas condiciones o valores.
+
+## Directivas: @yield vs @stack
+En Blade, tanto @stack como @yield son directivas que se utilizan para trabajar con secciones de contenido en las plantillas. Sin embargo, tienen diferentes propósitos y formas de funcionar:
+### @yield:
+La directiva @yield se utiliza para definir una sección de contenido que puede ser rellenada desde cualquier parte de la aplicación. Es similar a definir un marcador de posición para el contenido.
+Se utiliza en el archivo de la plantilla base (layout) para definir áreas donde el contenido dinámico puede ser inyectado desde otras vistas.
+**Ejemplo:**
+```blade
+<!-- layout.blade.php -->
+<html>
+<head>
+    <title>@yield('titulo')</title>
+</head>
+<body>
+    @yield('contenido')
+</body>
+</html>
+```
+### @stack:
+La directiva @stack se utiliza para apilar contenido en una sección que ya ha sido definida utilizando @push. Es útil cuando necesitas agregar contenido a una sección desde diferentes partes de tu aplicación sin sobrescribir el contenido anterior.
+Se utiliza en las vistas que desean agregar contenido a una sección previamente definida.
+**Ejemplo:**
+```blade
+<!-- vista.blade.php -->
+@push('scripts')
+    <script src="mi-script.js"></script>
+@endpush
+```
+```blade
+<!-- layout.blade.php -->
+<head>
+    @stack('scripts')
+</head>
+```
+En este ejemplo, el contenido dentro del @push('scripts') se apilará en la sección 'scripts', y luego se imprimirá en la plantilla base (layout) utilizando @stack('scripts').
+
+> En resumen, @yield se utiliza para definir secciones de contenido en la plantilla base que pueden ser llenadas desde otras vistas, mientras que @stack y @push se utilizan para apilar contenido en secciones predefinidas para permitir la adición dinámica de contenido desde diferentes partes de la aplicación.
