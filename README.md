@@ -28,6 +28,10 @@ Reforzando los fundamentos de Laravel
 
 `php artisan make:component NameComponent` -> para crear un componente
 
+`php artisan migrate` -> pera ejecutar las migraciones de la base de datos
+
+`php artisan migrate:roolback` -> para revertir la última migración que se haya ejecutado en la base de datos
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
@@ -670,3 +674,18 @@ Se utiliza en las vistas que desean agregar contenido a una sección previamente
 En este ejemplo, el contenido dentro del @push('scripts') se apilará en la sección 'scripts', y luego se imprimirá en la plantilla base (layout) utilizando @stack('scripts').
 
 > En resumen, @yield se utiliza para definir secciones de contenido en la plantilla base que pueden ser llenadas desde otras vistas, mientras que @stack y @push se utilizan para apilar contenido en secciones predefinidas para permitir la adición dinámica de contenido desde diferentes partes de la aplicación.
+
+# Migraciones
+## Ejecutar las migraciones
+El comando php artisan migrate en Laravel se utiliza para ejecutar las migraciones de la base de datos. Las migraciones son como versiones controladas de los cambios en la estructura de la base de datos. Te permiten definir y modificar la estructura de la base de datos utilizando código PHP en lugar de SQL directamente.
+Cuando ejecutas php artisan migrate, Laravel buscará en el directorio database/migrations de tu aplicación todas las migraciones que aún no se han ejecutado en la base de datos y las ejecutará en orden, aplicando los cambios necesarios para mantener la estructura de la base de datos al día con tu código.
+> En resumen, php artisan migrate es un comando fundamental en Laravel que te permite administrar la estructura de la base de datos de manera controlada y automatizada utilizando migraciones, lo que simplifica el proceso de desarrollo y mantenimiento de aplicaciones web basadas en Laravel.
+
+## Revertir última migración
+El comando php artisan migrate:rollback en Laravel se utiliza para revertir la última migración que se haya ejecutado en la base de datos. Revertir una migración deshace los cambios realizados por la migración más reciente, restaurando así el estado anterior de la base de datos.
+Algunos puntos importantes sobre php artisan migrate:rollback:
+- Revierte una migración: Este comando deshace los cambios realizados por la migración más reciente, eliminando las tablas creadas o modificadas y restaurando cualquier cambio que se haya realizado en la estructura de la base de datos.
+- Orden de reversión: Laravel mantiene un registro de todas las migraciones que se han ejecutado en la base de datos. Al ejecutar php artisan migrate:rollback, Laravel buscará la migración más reciente en este registro y revertirá los cambios realizados por esa migración.
+- Migraciones en lote: Si has ejecutado varias migraciones desde la última vez que ejecutaste php artisan migrate, migrate:rollback revertirá solo la migración más reciente. Si deseas revertir múltiples migraciones, tendrás que ejecutar el comando varias veces o utilizar la opción --step para especificar cuántas migraciones quieres revertir.
+- Estado de la base de datos: Es importante tener en cuenta que migrate:rollback solo revierte migraciones, no restaura los datos que hayas insertado o modificado en la base de datos desde la ejecución de la migración. Por lo tanto, si tienes datos que dependen de la estructura de la base de datos modificada por la migración, es posible que necesites realizar ajustes adicionales manualmente.
+> En resumen, php artisan migrate:rollback es un comando útil para deshacer los cambios realizados por la migración más reciente en la base de datos, lo que te permite retroceder y corregir errores o realizar ajustes en la estructura de la base de datos de tu aplicación Laravel.
