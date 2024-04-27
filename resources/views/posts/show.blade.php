@@ -1,14 +1,11 @@
-2<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Post</title>
-</head>
-<body>
+{{-- Herencia de plantillas, forma que se solía realizar hasta laravel 7 --}}
+@extends('layouts.app2')
+@push('meta')
+    <meta name="description" content="Curso de programación">
+@endpush
+@section('title', 'Post')
+@section('content')
     <h1>Aquí se mostrará el detalle del post {{ $post }}</h1>
 
-    <h2>{{ $pais }}</h2>
-</body>
-</html>
+    <h2>{{ $pais }}</h2>    
+@endsection

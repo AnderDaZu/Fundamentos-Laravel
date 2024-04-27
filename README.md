@@ -26,6 +26,8 @@ Reforzando los fundamentos de Laravel
 
 `php artisan make:provider ViewServiceProvider` -> para crear un provider
 
+`php artisan make:component NameComponent` -> para crear un componente
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
@@ -328,3 +330,343 @@ En caso de crearse un archivo en **app/View/Composers/ArchivoComposer.php**, se 
 ```php
 View::composer('posts.*', ArchivoComposer::class);
 ```
+
+# Blade
+
+Blade es el motor de plantillas predeterminado de Laravel, diseñado para hacer que escribir vistas en Laravel sea simple y expresivo. Blade proporciona una sintaxis concisa y poderosa para definir las vistas de tu aplicación. Algunas de las características principales de Blade incluyen:
+1. Sintaxis sencilla: Blade utiliza una sintaxis sencilla y familiar, que se asemeja al código HTML, para definir las vistas. Esto hace que sea fácil para los desarrolladores leer y escribir código de plantilla.
+2. Herencia de plantillas: Blade permite la creación de plantillas maestras y la extensión de estas plantillas en otras vistas. Esto facilita la creación de diseños consistentes en toda la aplicación.
+3. Directivas de control: Blade proporciona directivas de control simples y expresivas, como @if, @foreach, @forelse, @while, etc., que te permiten incluir lógica de programación en tus vistas de manera clara y legible.
+4. Inyección de contenido: Blade ofrece directivas para inyectar contenido dinámico en las vistas, como {{ $variable }} para imprimir el contenido de una variable, @yield para definir secciones que pueden ser reemplazadas en vistas secundarias, y @include para incluir otras vistas parciales en una vista principal.
+5. Compilación de plantillas: Blade compila las plantillas en código PHP puro, lo que significa que las vistas Blade se convierten en archivos PHP en tiempo de compilación. Esto mejora el rendimiento de tu aplicación al reducir la sobrecarga de procesamiento en tiempo de ejecución.
+
+## Formas para mostrar contenido en las vistas
+### {{ }} (Escapado automático):
+- Esta es la forma más común de mostrar contenido dinámico en las vistas de Blade.
+- Todo el contenido mostrado dentro de {{ }} será escapado automáticamente para prevenir ataques XSS (cross-site scripting). Esto significa que cualquier carácter HTML especial será convertido en su equivalente HTML seguro.
+- Es recomendable utilizar {{ }} siempre que estés mostrando contenido del usuario o de una fuente externa para garantizar la seguridad de tu aplicación.
+### {!! !!} (Sin escapado):
+- Esta forma permite mostrar contenido HTML sin escapar en las vistas de Blade.
+- A diferencia de {{ }}, el contenido dentro de {!! !!} no será escapado, lo que significa que se mostrará tal cual.
+- Debes tener cuidado al usar {!! !!} para evitar ataques XSS. Asegúrate de que el contenido que estás mostrando es seguro y proviene de una fuente confiable.
+
+> En resumen, {{ }} se utiliza para mostrar contenido de forma segura, escapando automáticamente cualquier carácter HTML especial, mientras que {!! !!} se utiliza para mostrar contenido HTML sin escapar, lo que puede ser útil cuando necesitas mostrar HTML generado dinámicamente en tus vistas. Es importante entender la diferencia entre estas dos formas y utilizar la más adecuada según las necesidades de tu aplicación y la seguridad del contenido que estás mostrando.
+
+## Evitar conflicto con sintaxis de frameworks de js
+La sintaxis @{{ $variable }} en Laravel Blade se utiliza para imprimir literalmente las llaves dobles {{ }} en la salida HTML de la vista, sin procesar el contenido dentro de ellas como una variable de Blade.
+Por defecto, en las vistas de Blade, si escribes {{ $variable }}, Laravel procesará y evaluará la variable $variable y luego imprimirá su valor en la salida HTML. Sin embargo, en algunos casos, puede que necesites imprimir las llaves dobles literalmente sin que Laravel las procese.
+Por ejemplo, si estás trabajando con un framework de JavaScript que también utiliza la sintaxis {{ }} para sus plantillas, puedes encontrarte con un conflicto en las vistas de Blade. En este caso, puedes usar @{{ }} para evitar el conflicto y asegurarte de que las llaves dobles se impriman literalmente en la salida HTML.
+**Ejemplo:**
+```js
+var appData = {
+    name: "@{{ $name }}",
+    age: {{ $age }},
+    // Otros datos
+};
+```
+
+## Directiva @json()
+La directiva Blade @json en Laravel se utiliza para convertir automáticamente una variable de PHP en una representación JSON válida. Esta directiva es útil cuando necesitas pasar datos de PHP a JavaScript en tus vistas de Blade de una manera segura y conveniente.
+Cuando utilizas @json en tu vista de Blade, Laravel convierte automáticamente la variable proporcionada en su representación JSON y la imprime en la salida HTML.
+Por ejemplo, supongamos que tienes una variable de PHP llamada $datos que contiene un array asociativo que deseas pasar a JavaScript. Puedes utilizar la directiva @json para convertir este array en JSON y hacerlo accesible en tu código JavaScript.
+**Ejemplo:**
+```js
+let datos = @json($datos);
+console.log(datos);
+```
+En este ejemplo, $datos se convierte automáticamente en su representación JSON y se asigna a la variable datos en JavaScript. Luego, puedes usar console.log() para imprimir los datos en la consola del navegador.
+Esta es una forma conveniente y segura de pasar datos de PHP a JavaScript en tus vistas de Blade, ya que Laravel se encarga de garantizar que los datos se conviertan en JSON de manera adecuada y segura. Además, esto te ayuda a evitar problemas de seguridad, como la inyección de código malicioso, al garantizar que los datos se escapen correctamente antes de ser impresos en la salida HTML.
+
+## Directivas Condicionales
+### Directiva @if()
+Esta directiva permite ejecutar un bloque de código si una expresión dada evalúa como verdadera.
+**Ejemplo:**
+```blade
+@if($usuario->activo)
+    El usuario está activo.
+@else
+    El usuario está inactivo.
+@endif
+```
+### Directiva @unless()
+Similar a @if, pero ejecuta un bloque de código si una expresión dada evalúa como falsa.
+**Ejemplo:**
+```blade
+@unless($usuario->premium)
+    No eres usuario premium.
+@endunless
+```
+### Directiva @isset() 
+Verifica si una variable está definida y no es nula.
+**Ejemplo:**
+```blade
+@isset($usuario->nombre)
+    El nombre del usuario es {{ $usuario->nombre }}.
+@endisset
+```
+### Directiva @empty() 
+Verifica si una variable está vacía. Esto incluye valores nulos, cadenas vacías, matrices vacías, objetos vacíos y variables no definidas.
+**Ejemplo:**
+```blade
+@empty($usuarios)
+    No hay usuarios disponibles.
+@else
+    Lista de usuarios:
+    @foreach($usuarios as $usuario)
+        {{ $usuario->nombre }},
+    @endforeach
+@endempty
+```
+
+> Estas directivas Blade proporcionan una forma conveniente y legible de realizar operaciones condicionales y verificar la existencia y el estado de las variables en las plantillas Blade de Laravel. Son muy útiles para personalizar la salida de las vistas en función de datos dinámicos y condiciones específicas.
+
+## Directiva @env
+La directiva Blade @env en Laravel te permite condicionar el contenido de tus vistas basado en el entorno de tu aplicación. Puedes usar esta directiva para mostrar u ocultar ciertas partes de tu vista dependiendo del entorno en el que se esté ejecutando tu aplicación.
+La sintaxis general de @env es la siguiente:
+```blade
+@env('entorno')
+    // Contenido a mostrar si la aplicación está en el entorno especificado
+@endenv
+
+@env(['entorno1', 'entorno2'])
+    // Contenido a mostrar si la aplicación está en cualquiera de los entornos especificados
+@endenv
+```
+> Esta directiva Blade es útil para condicionar el contenido de tus vistas en función del entorno de tu aplicación, lo que te permite personalizar la salida según sea necesario para el desarrollo, pruebas o producción.
+
+## Directiva @switch
+La directiva Blade @switch en Laravel proporciona una forma conveniente de escribir estructuras de control switch en tus vistas Blade. Esta directiva te permite comparar una expresión con varios casos y ejecutar un bloque de código correspondiente al caso coincidente.
+La estructura de la directiva @switch es similar a la estructura de control switch de PHP. 
+Aquí tienes un ejemplo básico de cómo usar @switch en una vista Blade:
+```blade
+@switch($opcion)
+    @case(1)
+        Opción 1 seleccionada
+        @break
+
+    @case(2)
+        Opción 2 seleccionada
+        @break
+
+    @default
+        Opción no válida
+@endswitch
+```
+El uso de la directiva Blade @switch puede hacer que tu código sea más legible y conciso cuando necesitas realizar una comparación de múltiples casos en tus vistas Blade. Es una forma conveniente de escribir estructuras de control switch directamente en tus plantillas sin tener que escribir código PHP dentro de ellas.
+
+## Directiva @foreach
+En Laravel Blade, la directiva @foreach es una herramienta poderosa que te permite iterar sobre una colección de elementos y ejecutar un bloque de código para cada elemento de la colección. Es una forma conveniente de generar contenido dinámico en tus vistas Blade, especialmente cuando trabajas con conjuntos de datos que pueden variar en tamaño.
+La sintaxis básica de la directiva @foreach es la siguiente:
+```blade
+@foreach($coleccion as $elemento)
+    <!-- Código HTML o Blade que se repetirá para cada elemento -->
+    {{ $elemento }}
+@endforeach
+```
+> La directiva @foreach es útil cuando necesitas mostrar una lista de elementos, como resultados de consultas de base de datos, elementos de un arreglo o cualquier otra colección de datos en tus vistas Blade. Te permite generar dinámicamente contenido HTML basado en los datos disponibles en tu aplicación.
+
+## Directiva @forelse
+La directiva @forelse en Laravel Blade es una variante de la directiva @foreach, diseñada específicamente para trabajar con estructuras de datos que pueden estar vacías. Proporciona una forma conveniente de iterar sobre una colección de elementos y manejar el caso en que la colección esté vacía.
+La sintaxis de @forelse es similar a la de @foreach, pero incluye una sección adicional para manejar el caso en que la colección esté vacía.
+Aquí tienes un ejemplo de cómo se utiliza @forelse en una vista Blade:
+```blade
+<ul>
+    @forelse ($usuarios as $usuario)
+        <li>{{ $usuario->nombre }}</li>
+    @empty
+        <li>No hay usuarios</li>
+    @endforelse
+</ul>
+```
+> La principal diferencia entre @forelse y @foreach es que @forelse maneja automáticamente el caso en que la colección esté vacía, lo que elimina la necesidad de realizar una comprobación adicional antes de iterar sobre la colección. Esto hace que el código sea más conciso y fácil de leer cuando trabajas con colecciones que pueden estar vacías.
+ ## Directivas @for y @while
+En Laravel Blade, las directivas @for y @while son estructuras de control que te permiten realizar bucles for y while directamente en tus vistas Blade. Estas directivas proporcionan una forma conveniente de generar contenido dinámico en tus plantillas sin necesidad de escribir código PHP directamente en ellas.
+### Directiva @for:
+La directiva @for te permite ejecutar un bucle for en tus vistas Blade. Te permite iterar sobre un rango de valores específico y ejecutar un bloque de código repetidamente.
+```blade
+@for ($i = 0; $i < 5; $i++)
+    <p>{{ $i }}</p>
+@endfor
+```
+### Directiva @while:
+La directiva @while te permite ejecutar un bucle while en tus vistas Blade. Te permite ejecutar un bloque de código repetidamente mientras se cumpla una condición específica.
+```blade
+@php
+    $i = 0;
+@endphp
+@while ($i < 5)
+    <p>{{ $i }}</p>
+    @php
+        $i++;
+    @endphp
+@endwhile
+```
+> Estas directivas son útiles cuando necesitas generar contenido dinámico basado en datos o realizar operaciones repetitivas en tus vistas Blade. Sin embargo, debes tener cuidado de no sobrecargar tus vistas con lógica de presentación compleja. Si necesitas realizar operaciones más complejas, es recomendable mover la lógica a los controladores o servicios de Laravel y pasar los datos necesarios a tus vistas Blade de manera más limpia y organizada.
+
+## Directivas @continue y @break
+En Laravel Blade, las directivas @continue y @break son utilizadas para controlar el flujo de ejecución dentro de bucles @foreach, @for y @while en tus vistas Blade.
+### La directiva @continue 
+Se utiliza para omitir la iteración actual en un bucle y continuar con la siguiente iteración. Esto significa que si se encuentra una directiva @continue dentro de un bucle, el código restante dentro de esa iteración será ignorado y el bucle pasará a la siguiente iteración.
+**Ejemplo de uso de @continue:**
+```blade
+@foreach($usuarios as $usuario)
+    @if ($usuario->estado == 'inactivo')
+        @continue
+    @endif
+    {{ $usuario->nombre }}
+@endforeach
+```
+En este ejemplo, si el estado del usuario es "inactivo", se omitirá la impresión del nombre del usuario y se pasará a la siguiente iteración del bucle.
+### La directiva @break 
+Se utiliza para salir completamente del bucle en el que se encuentra y continuar con la ejecución del código fuera del bucle. Esto significa que cuando se encuentra una directiva @break dentro de un bucle, el bucle se terminará inmediatamente y el código continuará ejecutándose después del bucle.
+**Ejemplo de uso de @break:**
+```blade
+@foreach($usuarios as $usuario)
+    @if ($usuario->id == $idBuscado)
+        {{ $usuario->nombre }}
+        @break
+    @endif
+@endforeach
+```
+En este ejemplo, una vez que se encuentra el usuario con el ID buscado, se imprime su nombre y luego se sale del bucle utilizando @break. Esto evita que el bucle siga iterando innecesariamente una vez que se ha encontrado el usuario buscado.
+
+> En resumen, @continue se utiliza para omitir la iteración actual y pasar a la siguiente iteración en un bucle, mientras que @break se utiliza para salir completamente del bucle y continuar con la ejecución del código fuera del bucle. Estas directivas son útiles para controlar el flujo de ejecución dentro de bucles en tus vistas Blade.
+
+## Variable $loop
+La variable $loop en las vistas Blade de Laravel proporciona información útil sobre el estado actual de la iteración en un bucle @foreach. Esta variable es automáticamente disponible dentro de los bucles @foreach y contiene varias propiedades que puedes utilizar para realizar acciones basadas en el estado de la iteración actual. Aquí hay algunas formas comunes en las que puedes utilizar la variable $loop en tus vistas Blade:
+1. Contador de iteración: Puedes utilizar la propiedad index de la variable $loop para obtener el índice de la iteración actual. Esta propiedad comienza desde 0 y se incrementa en cada iteración. Es útil cuando necesitas saber la posición relativa del elemento dentro del bucle.
+```blade
+@foreach($usuarios as $usuario)
+    {{ $loop->index }}: {{ $usuario->nombre }}
+@endforeach
+```
+2. Contador de iteración empezando en 1: Si deseas que el contador de iteración comience en 1 en lugar de 0, puedes usar la propiedad iteration.
+```blade
+@foreach($usuarios as $usuario)
+    {{ $loop->iteration }}: {{ $usuario->nombre }}
+@endforeach
+```
+3. Última iteración: La propiedad last de la variable $loop indica si la iteración actual es la última en el conjunto de datos. Es útil para realizar acciones específicas en la última iteración.
+```blade
+@foreach($usuarios as $usuario)
+    {{ $usuario->nombre }}
+    @if ($loop->last)
+        Este es el último usuario.
+    @endif
+@endforeach
+```
+4. Primer iteración: La propiedad first indica si la iteración actual es la primera en el conjunto de datos. Es útil para realizar acciones específicas en la primera iteración.
+```blade
+@foreach($usuarios as $usuario)
+    @if ($loop->first)
+        Este es el primer usuario.
+    @endif
+    {{ $usuario->nombre }}
+@endforeach
+```
+5. Cantidad total de iteraciones: La propiedad count indica el número total de elementos en el conjunto de datos que estás iterando.
+```blade
+<p>Total de usuarios: {{ $usuarios->count() }}</p>
+```
+6. Parent loop: Si estás anidando bucles @foreach, puedes acceder al loop padre utilizando la propiedad parent.
+```blade
+@foreach($categorias as $categoria)
+    <h2>{{ $categoria->nombre }}</h2>
+    @foreach($categoria->productos as $producto)
+        <p>{{ $producto->nombre }}</p>
+        <span>Iteración en el bucle padre: {{ $loop->parent->iteration }}</span>
+    @endforeach
+@endforeach
+```
+> Estas son algunas formas comunes en las que puedes utilizar la variable $loop en tus vistas Blade para realizar acciones basadas en el estado de la iteración actual en los bucles @foreach. Es una herramienta muy útil para hacer que tus plantillas Blade sean más dinámicas y flexibles.
+
+## Directiva @class
+La directiva @class en Laravel Blade se utiliza para agregar clases CSS condicionalmente a los elementos HTML en tus plantillas Blade. Esta directiva es útil cuando necesitas aplicar clases CSS basadas en ciertas condiciones, como valores de variables o el estado de una condición.
+Aquí tienes algunos casos comunes en los que la directiva @class puede ser útil:
+1. Aplicar clases condicionales basadas en valores de variables: Puedes usar @class para aplicar clases CSS a un elemento HTML basadas en los valores de las variables en tus vistas Blade. 
+*Por ejemplo:*
+```blade
+<div class="@class(['active' => $activo, 'disabled' => !$habilitado])">
+    Contenido del elemento
+</div>
+```
+En este ejemplo, la clase active se aplicará si la variable $activo es verdadera, y la clase disabled se aplicará si $habilitado es falso.
+2. Aplicar clases condicionales basadas en valores de datos dinámicos: Puedes usar @class para aplicar clases CSS basadas en los valores de datos dinámicos provenientes de la base de datos o de otras fuentes. 
+*Por ejemplo:*
+```blade
+<ul>
+@foreach($items as $item)
+    <li class="@class(['featured' => $item->destacado, 'new' => $item->nuevo])">
+        {{ $item->nombre }}
+    </li>
+@endforeach
+</ul>
+```
+En este ejemplo, la clase featured se aplicará si $item->destacado es verdadero, y la clase new se aplicará si $item->nuevo es verdadero.
+3. Aplicar clases condicionales basadas en el contexto de la ruta actual: Puedes usar @class para aplicar clases CSS basadas en el nombre de la ruta actual o en el segmento de la URL. Por ejemplo:
+```blade
+<a href="{{ route('home') }}" class="@class(['active' => request()->routeIs('home')])">Inicio</a>
+```
+En este ejemplo, la clase active se aplicará si la ruta actual coincide con la ruta con nombre 'home'.
+
+> La directiva @class proporciona una forma conveniente y legible de aplicar clases CSS condicionalmente en tus plantillas Blade, lo que te permite mantener tu código limpio y modular. Puedes usarla en una variedad de casos para adaptar dinámicamente el aspecto de tus elementos HTML según las condiciones específicas de tu aplicación.
+
+## Directivas @include, @includeIf, @includeWhen, @includeUnless, @includeFirst
+Estas directivas son utilizadas en Laravel Blade para incluir otras vistas dentro de una vista principal. Esto permite la reutilización de código y la organización modular de las vistas.
+### @include:
+Esta directiva se utiliza para incluir una vista específica dentro de otra vista. Puedes usarla para incluir encabezados, pies de página, barras laterales u otros componentes reutilizables.
+Sintaxis: @include('nombre_de_la_vista').
+### @includeIf:
+Similar a @include, pero solo incluirá la vista si una condición dada es verdadera o si la vista existe.
+Sintaxis: @includeIf(condición, 'nombre_de_la_vista').
+### @includeWhen:
+Similar a @includeIf, pero permite especificar la vista a incluir como un tercer parámetro en lugar de una cadena.
+Sintaxis: @includeWhen(condición, 'nombre_de_la_vista', ['parámetros']).
+### @includeUnless:
+Similar a @includeIf, pero incluirá la vista solo si una condición dada es falsa.
+Sintaxis: @includeUnless(condición, 'nombre_de_la_vista', ['parámetros']).
+### @includeFirst:
+Esta directiva intenta incluir la primera vista que existe dentro de un conjunto dado de vistas. Es útil cuando deseas incluir una de varias vistas basadas en ciertas condiciones.
+Sintaxis: @includeFirst(['vista1', 'vista2', 'vista3']).
+
+Estas directivas son especialmente útiles para la modularización y la organización del código en tus vistas Blade. Te permiten dividir tus vistas en componentes más pequeños y reutilizables, lo que facilita el mantenimiento y la legibilidad del código. Además, las directivas @includeIf, @includeWhen, @includeUnless y @includeFirst proporcionan funcionalidades adicionales para la inclusión condicional de vistas, lo que aumenta la flexibilidad en la composición de tus vistas.
+
+## Componentes de clases
+Los componentes de clases en Blade son una forma de generar clases HTML de manera dinámica en tus vistas de Laravel Blade. Son útiles cuando necesitas aplicar clases condicionalmente a elementos HTML basadas en ciertas condiciones o valores.
+
+## Directivas: @yield vs @stack
+En Blade, tanto @stack como @yield son directivas que se utilizan para trabajar con secciones de contenido en las plantillas. Sin embargo, tienen diferentes propósitos y formas de funcionar:
+### @yield:
+La directiva @yield se utiliza para definir una sección de contenido que puede ser rellenada desde cualquier parte de la aplicación. Es similar a definir un marcador de posición para el contenido.
+Se utiliza en el archivo de la plantilla base (layout) para definir áreas donde el contenido dinámico puede ser inyectado desde otras vistas.
+**Ejemplo:**
+```blade
+<!-- layout.blade.php -->
+<html>
+<head>
+    <title>@yield('titulo')</title>
+</head>
+<body>
+    @yield('contenido')
+</body>
+</html>
+```
+### @stack:
+La directiva @stack se utiliza para apilar contenido en una sección que ya ha sido definida utilizando @push. Es útil cuando necesitas agregar contenido a una sección desde diferentes partes de tu aplicación sin sobrescribir el contenido anterior.
+Se utiliza en las vistas que desean agregar contenido a una sección previamente definida.
+**Ejemplo:**
+```blade
+<!-- vista.blade.php -->
+@push('scripts')
+    <script src="mi-script.js"></script>
+@endpush
+```
+```blade
+<!-- layout.blade.php -->
+<head>
+    @stack('scripts')
+</head>
+```
+En este ejemplo, el contenido dentro del @push('scripts') se apilará en la sección 'scripts', y luego se imprimirá en la plantilla base (layout) utilizando @stack('scripts').
+
+> En resumen, @yield se utiliza para definir secciones de contenido en la plantilla base que pueden ser llenadas desde otras vistas, mientras que @stack y @push se utilizan para apilar contenido en secciones predefinidas para permitir la adición dinámica de contenido desde diferentes partes de la aplicación.
