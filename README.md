@@ -28,9 +28,11 @@ Reforzando los fundamentos de Laravel
 
 `php artisan make:component NameComponent` -> para crear un componente
 
-`php artisan migrate` -> pera ejecutar las migraciones de la base de datos
+`php artisan migrate` -> para ejecutar las migraciones de la base de datos
 
 `php artisan migrate:roolback` -> para revertir la última migración que se haya ejecutado en la base de datos
+
+`php artisan make:migration nameMigration` -> para crear una migración
 
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
@@ -689,3 +691,23 @@ Algunos puntos importantes sobre php artisan migrate:rollback:
 - Migraciones en lote: Si has ejecutado varias migraciones desde la última vez que ejecutaste php artisan migrate, migrate:rollback revertirá solo la migración más reciente. Si deseas revertir múltiples migraciones, tendrás que ejecutar el comando varias veces o utilizar la opción --step para especificar cuántas migraciones quieres revertir.
 - Estado de la base de datos: Es importante tener en cuenta que migrate:rollback solo revierte migraciones, no restaura los datos que hayas insertado o modificado en la base de datos desde la ejecución de la migración. Por lo tanto, si tienes datos que dependen de la estructura de la base de datos modificada por la migración, es posible que necesites realizar ajustes adicionales manualmente.
 > En resumen, php artisan migrate:rollback es un comando útil para deshacer los cambios realizados por la migración más reciente en la base de datos, lo que te permite retroceder y corregir errores o realizar ajustes en la estructura de la base de datos de tu aplicación Laravel.
+
+## Objeto $table
+Cuando creas una migración en Laravel y defines una tabla, utilizas el objeto $table para definir la estructura y las características de esa tabla. El objeto $table proporciona una serie de métodos que puedes utilizar para definir columnas, claves, restricciones y otros elementos de la tabla. Aquí tienes una lista de los principales métodos disponibles en el objeto $table:
+### Columnas
+- increments($column): Define una columna de tipo autoincremental INTEGER con clave primaria.
+- bigIncrements($column): Define una columna de tipo autoincremental BIGINT con clave primaria.
+- string($column, $length = null): Define una columna de tipo VARCHAR.
+- text($column): Define una columna de tipo TEXT.
+- integer($column, $autoIncrement = false, $unsigned = false): Define una columna de tipo INTEGER.
+- bigInteger($column, $autoIncrement = false, $unsigned = false): Define una columna de tipo BIGINT.
+- float($column, $total = 8, $places = 2): Define una columna de tipo FLOAT.
+- double($column, $total = 8, $places = 2): Define una columna de tipo DOUBLE.
+- decimal($column, $total = 8, $places = 2): Define una columna de tipo DECIMAL.
+- boolean($column): Define una columna de tipo BOOLEAN.
+- date($column): Define una columna de tipo DATE.
+- dateTime($column): Define una columna de tipo DATETIME.
+- time($column): Define una columna de tipo TIME.
+- timestamp($column): Define una columna de tipo TIMESTAMP.
+- timestamps(): Agrega automáticamente las columnas created_at y updated_at.
+- softDeletes(): Agrega automáticamente la columna deleted_at para realizar eliminaciones suaves (soft deletes).
