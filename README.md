@@ -34,6 +34,10 @@ Reforzando los fundamentos de Laravel
 
 `php artisan make:migration nameMigration` -> para crear una migración
 
+`php artisan migrate:refresh` -> se utiliza para deshacer y volver a ejecutar todas las migraciones de la base de datos. Esencialmente, migrate:refresh deshace todas las migraciones y luego las vuelve a ejecutar, lo que permite restaurar la base de datos a su estado inicial, este comando no elimina las tablas que se crearon fuera de las migraciones.
+
+`php artisan migrate:fresh` -> para eliminar todas las tablas y volver a generarlas desde cero, eso también eliminará las tablas que no fueron creadas desde las migraciones
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
@@ -711,3 +715,16 @@ Cuando creas una migración en Laravel y defines una tabla, utilizas el objeto $
 - timestamp($column): Define una columna de tipo TIMESTAMP.
 - timestamps(): Agrega automáticamente las columnas created_at y updated_at.
 - softDeletes(): Agrega automáticamente la columna deleted_at para realizar eliminaciones suaves (soft deletes).
+
+## Revertir cambios
+Los comandos php artisan migrate:refresh y php artisan migrate:fresh se utilizan en Laravel para volver a crear todas las tablas de la base de datos a través de las migraciones. Sin embargo, tienen diferencias clave en cómo manejan los datos existentes en la base de datos actual:
+- `php artisan migrate:refresh` El comando migrate:refresh deshace y vuelve a ejecutar todas las migraciones. Esto significa que revierte todas las migraciones existentes y luego las vuelve a ejecutar desde cero.
+Deshace todas las migraciones y luego las vuelve a ejecutar, por lo que es útil para aplicar cambios en la estructura de la base de datos y actualizar los datos existentes al estado más reciente definido por las migraciones.
+A menudo se utiliza en entornos de desarrollo y pruebas donde es necesario restablecer la base de datos a un estado inicial conocido.
+También se puede usar en entornos de producción, pero teniendo en cuenta que deshace y vuelve a ejecutar todas las migraciones, esto puede resultar en la pérdida de datos si no se tienen en cuenta adecuadamente.
+- `php artisan migrate:fresh` El comando migrate:fresh descarta todas las tablas de la base de datos y luego las vuelve a crear a través de las migraciones. Esto elimina completamente todas las tablas y datos existentes de la base de datos.
+Es útil cuando necesitas "limpiar" por completo la base de datos y comenzar desde cero con la estructura definida por las migraciones.
+Por lo general, se utiliza en entornos de desarrollo o pruebas donde se necesita un reinicio completo de la base de datos para realizar pruebas o comenzar un nuevo ciclo de desarrollo desde cero.
+Debes tener cuidado al usar migrate:fresh en entornos de producción, ya que eliminará todas las tablas y datos existentes de la base de datos, lo que puede provocar la pérdida de datos si no se realiza correctamente.
+
+> En resumen, `php artisan migrate:refresh` deshace y vuelve a ejecutar todas las migraciones, mientras que `php artisan migrate:fresh` descarta y vuelve a crear todas las tablas de la base de datos. Ambos comandos tienen su lugar y uso adecuado dependiendo de los requisitos y el contexto del proyecto.
