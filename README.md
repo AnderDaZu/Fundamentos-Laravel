@@ -38,6 +38,8 @@ Reforzando los fundamentos de Laravel
 
 `php artisan migrate:fresh` -> para eliminar todas las tablas y volver a generarlas desde cero, eso también eliminará las tablas que no fueron creadas desde las migraciones
 
+`php artisan make:migration add_slug_to_posts_table` para crear una  columna en una tabla existente.
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
@@ -728,3 +730,30 @@ Por lo general, se utiliza en entornos de desarrollo o pruebas donde se necesita
 Debes tener cuidado al usar migrate:fresh en entornos de producción, ya que eliminará todas las tablas y datos existentes de la base de datos, lo que puede provocar la pérdida de datos si no se realiza correctamente.
 
 > En resumen, `php artisan migrate:refresh` deshace y vuelve a ejecutar todas las migraciones, mientras que `php artisan migrate:fresh` descarta y vuelve a crear todas las tablas de la base de datos. Ambos comandos tienen su lugar y uso adecuado dependiendo de los requisitos y el contexto del proyecto.
+
+## Actualizando tabla con migraciones
+Para actualizar alguna tabla que ya fue creada por una migración, se debe crear otra migración siguiendo la convención del siguiente comando `php artisan make:migration add_fieldname_to_nametable_table` donde fieldname hace referencia al nombre del campo y nametable hace referencia al nombre de la tabla sobre la que se va a agregar dicho campo, una vez se ejecute el comando mencionado, se procede a ingresar las caracteristicas del nuevo campo en la nueva migración, es de resaltar que toca especificar en el método down cual es la columna a elimnar en llegado caso de realizar un rollback. A continuación un ejemplo:
+```php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('posts', function (Blueprint $table) {
+            $table->string('slug')
+            ->nullable() // campo slug es null por defecto
+            ->unique() // campo slug es unico
+            ->after('title'); // campo slug se crea despues del campo title
+        });
+    }
+    public function down(): void
+    {
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropColumn('slug');
+        });
+    }
+};
+```
+> Es de aclarar que si se ejecuto el comando que corre las migraciones y luego se encontró que falto agregar algo en la última migración creada, se debe primero ejecutar el comando que revierte la última migración `php artisan migrate::rollback` y luego de que se esté seguro de que se agrego todo lo necesario en la última migración ahí si se ejecute nuevamente el comando que corre las migraciones `php artisan migrate`
