@@ -17,6 +17,10 @@ return new class extends Migration
                 ->nullable() // si la columna inicial tubo modificadores, se deben agregar cuando se modifique la columna
                 ->change(); // este modificador indica la actualización de un campo de la tabla
 
+            // Para renombrar columnas de una tabla de la db se debe instalar un paquete
+            // composer require doctrine/dbal
+            $table->renameColumn('title', 'main_title');
+
         });
     }
 
@@ -25,10 +29,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('post', function (Blueprint $table) {
+        Schema::table('posts', function (Blueprint $table) {
             $table->text('body')
                 ->nullable()
                 ->change();
+            
+            $table->renameColumn('main_title', 'title');
         });
     }
 };
