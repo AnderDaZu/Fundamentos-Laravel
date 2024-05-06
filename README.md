@@ -757,3 +757,28 @@ return new class extends Migration
 };
 ```
 > Es de aclarar que si se ejecuto el comando que corre las migraciones y luego se encontró que falto agregar algo en la última migración creada, se debe primero ejecutar el comando que revierte la última migración `php artisan migrate::rollback` y luego de que se esté seguro de que se agrego todo lo necesario en la última migración ahí si se ejecute nuevamente el comando que corre las migraciones `php artisan migrate`
+
+## Eleminar alguna tabla
+Para eliminar una tabla de la base de datos mediante migraciones, se debe crear una migración la cual indique la tabla que se va a eliminar, ejemplo:
+`$ php artisan make:migration drop_posts_table`
+una vez se ejecute dicho comando, en la migración que se creo, en el método up se debe indicar que tabla será eliminada, ejemplo:
+```php
+public function up(): void
+{
+    Schema::dropIfExists('posts');
+}
+```
+No obstante también se debe especificar en el método down la tabla que se debe crear en llegado caso se revierta la migración con la ejecución de un rollback, en este caso queda así:
+```php
+public function down(): void
+{
+    Schema::create('posts', function (Blueprint $table) {
+        $table->id();
+        $table->string('title');
+        $table->string('slug')->unique();
+        $table->longText('body');
+        $table->timestamp('published_at');
+        $table->timestamps();
+    });
+}
+```
