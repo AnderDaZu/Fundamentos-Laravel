@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('data', function (Blueprint $table) {
 
             // https://laravel.com/docs/10.x/migrations#available-column-types
-            
+
             $table->id();
             $table->bigIncrements('id_2'); // permite crear llaves de id grandes
             $table->uuid('id');	// Tipo de columna equivalente a UUID.
@@ -59,6 +59,16 @@ return new class extends Migration
             $table->softDeletes(0); // Agrega un tipo de columna equivalente a TIMESTAMP que permita nulos para deleted_at en eliminaciones lógicas con precisión (dígitos totales).
 
             $table->timestamps();
+
+            // Modificadores de columnas
+            $table->string('lastname')
+                ->default('Andershopy'); // valor por defecto 
+            $table->text('description')
+                ->nullable(); // si no recibe algún valor, se agregará null como valor, quiere decir que el campo es opcional
+            $table->integer('edad')
+                ->unsigned(); // permite ingresar solo valores positivos
+            $table->timestamp('published_at')
+                ->useCurrent(); // permite usar la fecha y hora actual como valor por defecto
         });
     }
 
