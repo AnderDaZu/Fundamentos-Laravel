@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB; // paquete que permite realizar consultas a db
 
 /*
 |--------------------------------------------------------------------------
@@ -93,4 +94,51 @@ Route::prefix('posts')->name('posts.')->controller(PostController::class)->group
     Route::get('/{post}/edit', 'edit')->name('edit');
     Route::put('/{post}', 'update')->name('update');
     Route::delete('/{post}', 'destroy')->name('destroy');
+});
+
+Route::get('/prueba', function () {
+    $categories = DB::table('categories')
+                ->select('id', 'name')
+                ->where('id', 1)
+                ->get(); // cuando se usa get, este retorna un array con objetos (resultados)
+    /*
+        [
+            {
+                ...resultado 1
+            },
+            {
+                ...resultado 2
+            } ...
+        ]
+    */
+
+    $category = DB::table('categories')
+                ->select('id', 'name')
+                ->where('id', 1)
+                ->first(); // cuando se usa first, este retorna un objeto (resultado) y es el primero del array
+    /* 
+        {
+            ...resultado 1
+        }
+    */
+
+    $category = DB::table('categories')
+                ->select('id', 'name')
+                ->find(4); // trae el registro cuyo id es igual a 4
+    
+    /*
+        {
+            ...resultado 4
+        }
+    */
+
+    $categories = DB::table('categories')
+                    ->pluck('name', 'id'); // devuelve un array asociativo donde los valores de id son las llaves y los valores de name son los valores
+   
+    /*
+        [
+            '1' => 'category 1',
+            '2' => 'category 2',
+        ]
+    */
 });
