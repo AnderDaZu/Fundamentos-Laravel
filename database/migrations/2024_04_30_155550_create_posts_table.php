@@ -12,7 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id();
+            // $table->id();
+            
+            // $table->bigInteger('id')
+            //     ->autoIncrement() // agrega llave primaria y valores auto incrementales
+            //     ->unsigned(); // evitar que se agreguen valores negativos
+            // lo de arriba ☝️ es igual que lo de abajo 👇
+            $table->bigIncrements('id');
+
+            // Si no se requiere valores tan grandes en la tabla primaria, se puede declarar de la siguiente manera:
+            // $table->increments('id');
+
+            $table->index('title');
+            $table->fullText('body');
 
             $table->string('title');
             // $table->string('slug');
