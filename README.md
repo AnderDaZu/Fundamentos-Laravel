@@ -28,6 +28,18 @@ Reforzando los fundamentos de Laravel
 
 `php artisan make:component NameComponent` -> para crear un componente
 
+`php artisan migrate` -> para ejecutar las migraciones de la base de datos
+
+`php artisan migrate:roolback` -> para revertir la última migración que se haya ejecutado en la base de datos
+
+`php artisan make:migration nameMigration` -> para crear una migración
+
+`php artisan migrate:refresh` -> se utiliza para deshacer y volver a ejecutar todas las migraciones de la base de datos. Esencialmente, migrate:refresh deshace todas las migraciones y luego las vuelve a ejecutar, lo que permite restaurar la base de datos a su estado inicial, este comando no elimina las tablas que se crearon fuera de las migraciones.
+
+`php artisan migrate:fresh` -> para eliminar todas las tablas y volver a generarlas desde cero, eso también eliminará las tablas que no fueron creadas desde las migraciones
+
+`php artisan make:migration add_slug_to_posts_table` para crear una  columna en una tabla existente.
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
@@ -670,3 +682,103 @@ Se utiliza en las vistas que desean agregar contenido a una sección previamente
 En este ejemplo, el contenido dentro del @push('scripts') se apilará en la sección 'scripts', y luego se imprimirá en la plantilla base (layout) utilizando @stack('scripts').
 
 > En resumen, @yield se utiliza para definir secciones de contenido en la plantilla base que pueden ser llenadas desde otras vistas, mientras que @stack y @push se utilizan para apilar contenido en secciones predefinidas para permitir la adición dinámica de contenido desde diferentes partes de la aplicación.
+
+# Migraciones
+## Ejecutar las migraciones
+El comando php artisan migrate en Laravel se utiliza para ejecutar las migraciones de la base de datos. Las migraciones son como versiones controladas de los cambios en la estructura de la base de datos. Te permiten definir y modificar la estructura de la base de datos utilizando código PHP en lugar de SQL directamente.
+Cuando ejecutas php artisan migrate, Laravel buscará en el directorio database/migrations de tu aplicación todas las migraciones que aún no se han ejecutado en la base de datos y las ejecutará en orden, aplicando los cambios necesarios para mantener la estructura de la base de datos al día con tu código.
+> En resumen, php artisan migrate es un comando fundamental en Laravel que te permite administrar la estructura de la base de datos de manera controlada y automatizada utilizando migraciones, lo que simplifica el proceso de desarrollo y mantenimiento de aplicaciones web basadas en Laravel.
+
+## Revertir última migración
+El comando php artisan migrate:rollback en Laravel se utiliza para revertir la última migración que se haya ejecutado en la base de datos. Revertir una migración deshace los cambios realizados por la migración más reciente, restaurando así el estado anterior de la base de datos.
+Algunos puntos importantes sobre php artisan migrate:rollback:
+- Revierte una migración: Este comando deshace los cambios realizados por la migración más reciente, eliminando las tablas creadas o modificadas y restaurando cualquier cambio que se haya realizado en la estructura de la base de datos.
+- Orden de reversión: Laravel mantiene un registro de todas las migraciones que se han ejecutado en la base de datos. Al ejecutar php artisan migrate:rollback, Laravel buscará la migración más reciente en este registro y revertirá los cambios realizados por esa migración.
+- Migraciones en lote: Si has ejecutado varias migraciones desde la última vez que ejecutaste php artisan migrate, migrate:rollback revertirá solo la migración más reciente. Si deseas revertir múltiples migraciones, tendrás que ejecutar el comando varias veces o utilizar la opción --step para especificar cuántas migraciones quieres revertir.
+- Estado de la base de datos: Es importante tener en cuenta que migrate:rollback solo revierte migraciones, no restaura los datos que hayas insertado o modificado en la base de datos desde la ejecución de la migración. Por lo tanto, si tienes datos que dependen de la estructura de la base de datos modificada por la migración, es posible que necesites realizar ajustes adicionales manualmente.
+> En resumen, php artisan migrate:rollback es un comando útil para deshacer los cambios realizados por la migración más reciente en la base de datos, lo que te permite retroceder y corregir errores o realizar ajustes en la estructura de la base de datos de tu aplicación Laravel.
+
+## Objeto $table
+Cuando creas una migración en Laravel y defines una tabla, utilizas el objeto $table para definir la estructura y las características de esa tabla. El objeto $table proporciona una serie de métodos que puedes utilizar para definir columnas, claves, restricciones y otros elementos de la tabla. Aquí tienes una lista de los principales métodos disponibles en el objeto $table:
+### Columnas
+- increments($column): Define una columna de tipo autoincremental INTEGER con clave primaria.
+- bigIncrements($column): Define una columna de tipo autoincremental BIGINT con clave primaria.
+- string($column, $length = null): Define una columna de tipo VARCHAR.
+- text($column): Define una columna de tipo TEXT.
+- integer($column, $autoIncrement = false, $unsigned = false): Define una columna de tipo INTEGER.
+- bigInteger($column, $autoIncrement = false, $unsigned = false): Define una columna de tipo BIGINT.
+- float($column, $total = 8, $places = 2): Define una columna de tipo FLOAT.
+- double($column, $total = 8, $places = 2): Define una columna de tipo DOUBLE.
+- decimal($column, $total = 8, $places = 2): Define una columna de tipo DECIMAL.
+- boolean($column): Define una columna de tipo BOOLEAN.
+- date($column): Define una columna de tipo DATE.
+- dateTime($column): Define una columna de tipo DATETIME.
+- time($column): Define una columna de tipo TIME.
+- timestamp($column): Define una columna de tipo TIMESTAMP.
+- timestamps(): Agrega automáticamente las columnas created_at y updated_at.
+- softDeletes(): Agrega automáticamente la columna deleted_at para realizar eliminaciones suaves (soft deletes).
+
+## Revertir cambios
+Los comandos php artisan migrate:refresh y php artisan migrate:fresh se utilizan en Laravel para volver a crear todas las tablas de la base de datos a través de las migraciones. Sin embargo, tienen diferencias clave en cómo manejan los datos existentes en la base de datos actual:
+- `php artisan migrate:refresh` El comando migrate:refresh deshace y vuelve a ejecutar todas las migraciones. Esto significa que revierte todas las migraciones existentes y luego las vuelve a ejecutar desde cero.
+Deshace todas las migraciones y luego las vuelve a ejecutar, por lo que es útil para aplicar cambios en la estructura de la base de datos y actualizar los datos existentes al estado más reciente definido por las migraciones.
+A menudo se utiliza en entornos de desarrollo y pruebas donde es necesario restablecer la base de datos a un estado inicial conocido.
+También se puede usar en entornos de producción, pero teniendo en cuenta que deshace y vuelve a ejecutar todas las migraciones, esto puede resultar en la pérdida de datos si no se tienen en cuenta adecuadamente.
+- `php artisan migrate:fresh` El comando migrate:fresh descarta todas las tablas de la base de datos y luego las vuelve a crear a través de las migraciones. Esto elimina completamente todas las tablas y datos existentes de la base de datos.
+Es útil cuando necesitas "limpiar" por completo la base de datos y comenzar desde cero con la estructura definida por las migraciones.
+Por lo general, se utiliza en entornos de desarrollo o pruebas donde se necesita un reinicio completo de la base de datos para realizar pruebas o comenzar un nuevo ciclo de desarrollo desde cero.
+Debes tener cuidado al usar migrate:fresh en entornos de producción, ya que eliminará todas las tablas y datos existentes de la base de datos, lo que puede provocar la pérdida de datos si no se realiza correctamente.
+
+> En resumen, `php artisan migrate:refresh` deshace y vuelve a ejecutar todas las migraciones, mientras que `php artisan migrate:fresh` descarta y vuelve a crear todas las tablas de la base de datos. Ambos comandos tienen su lugar y uso adecuado dependiendo de los requisitos y el contexto del proyecto.
+
+## Actualizando tabla con migraciones
+Para actualizar alguna tabla que ya fue creada por una migración, se debe crear otra migración siguiendo la convención del siguiente comando `php artisan make:migration add_fieldname_to_nametable_table` donde fieldname hace referencia al nombre del campo y nametable hace referencia al nombre de la tabla sobre la que se va a agregar dicho campo, una vez se ejecute el comando mencionado, se procede a ingresar las caracteristicas del nuevo campo en la nueva migración, es de resaltar que toca especificar en el método down cual es la columna a elimnar en llegado caso de realizar un rollback. A continuación un ejemplo:
+```php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('posts', function (Blueprint $table) {
+            $table->string('slug')
+            ->nullable() // campo slug es null por defecto
+            ->unique() // campo slug es unico
+            ->after('title'); // campo slug se crea despues del campo title
+        });
+    }
+    public function down(): void
+    {
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropColumn('slug');
+        });
+    }
+};
+```
+> Es de aclarar que si se ejecuto el comando que corre las migraciones y luego se encontró que falto agregar algo en la última migración creada, se debe primero ejecutar el comando que revierte la última migración `php artisan migrate::rollback` y luego de que se esté seguro de que se agrego todo lo necesario en la última migración ahí si se ejecute nuevamente el comando que corre las migraciones `php artisan migrate`
+
+## Eleminar alguna tabla
+Para eliminar una tabla de la base de datos mediante migraciones, se debe crear una migración la cual indique la tabla que se va a eliminar, ejemplo:
+`$ php artisan make:migration drop_posts_table`
+una vez se ejecute dicho comando, en la migración que se creo, en el método up se debe indicar que tabla será eliminada, ejemplo:
+```php
+public function up(): void
+{
+    Schema::dropIfExists('posts');
+}
+```
+No obstante también se debe especificar en el método down la tabla que se debe crear en llegado caso se revierta la migración con la ejecución de un rollback, en este caso queda así:
+```php
+public function down(): void
+{
+    Schema::create('posts', function (Blueprint $table) {
+        $table->id();
+        $table->string('title');
+        $table->string('slug')->unique();
+        $table->longText('body');
+        $table->timestamp('published_at');
+        $table->timestamps();
+    });
+}
+```
