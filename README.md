@@ -40,6 +40,8 @@ Reforzando los fundamentos de Laravel
 
 `php artisan make:migration add_slug_to_posts_table` para crear una  columna en una tabla existente.
 
+`php artisan db:seed` permite ejecutar el archivo referente a los seeders
+
 # Rutas
 En Laravel, las rutas son definiciones que relacionan una URL específica con una acción del controlador o una función de cierre (closure). En otras palabras, las rutas permiten al framework dirigir las solicitudes HTTP entrantes a las clases y métodos adecuados para manejarlas.
 
@@ -781,4 +783,14 @@ public function down(): void
         $table->timestamps();
     });
 }
+```
+
+# Queries
+## Método chunk() para fragmentar o truncar grandes cantidades de registros en los resultados
+EN Laravel se utiliza el método chunck() para procesar grandes conjuntos de datos en la base de datos en bloques más pequeños, lo que puede ser útil para evitar el agotamiento de la memoria cuando se trabaja con grandes cantidades de registros.
+
+Cuando utilizas chunk, Laravel recupera un número especificado de registros de la base de datos y los pasa a una función de devolución de llamada que puedes definir. Después de procesar ese bloque de registros, Laravel recupera el siguiente bloque y continúa así hasta que se procesan todos los registros.
+
+```php
+
 ```

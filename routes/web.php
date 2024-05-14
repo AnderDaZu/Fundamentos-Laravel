@@ -142,3 +142,15 @@ Route::get('/prueba', function () {
         ]
     */
 });
+Route::get('/prueba2', function () {
+    // Resultados de fragmentación
+    DB::table('users')
+        ->orderBy('id')
+        ->chunk(100, function ($users) {
+        // ->chunkById(100, function ($users) { // se usa cuando se requiere realizar actualizaciones
+            // $users es un array de objetos
+            foreach ($users as $user) {
+                echo $user->id . " - " . $user->name . "<br>";
+            }
+    });
+});
