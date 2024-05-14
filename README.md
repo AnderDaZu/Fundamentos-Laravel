@@ -792,5 +792,26 @@ EN Laravel se utiliza el método chunck() para procesar grandes conjuntos de dat
 Cuando utilizas chunk, Laravel recupera un número especificado de registros de la base de datos y los pasa a una función de devolución de llamada que puedes definir. Después de procesar ese bloque de registros, Laravel recupera el siguiente bloque y continúa así hasta que se procesan todos los registros.
 
 ```php
+DB::table('users')
+    ->orderBy('id')
+    ->chunk(100, function ($users) {
+    // ->chunkById(100, function ($users) { // se usa cuando se requiere realizar actualizaciones
+        // $users es un array de objetos
+        foreach ($users as $user) {
+            // echo $user->id . " - " . $user->name . "<br>";
+        }
+});
+```
+## Método lazy()
 
+El método lazy en Laravel se utiliza para recuperar los resultados de una consulta de la base de datos de manera diferida, es decir, los resultados no se recuperan todos de una vez, sino que se obtienen a medida que se iteran. Esto puede ser útil cuando necesitas procesar grandes conjuntos de datos y quieres evitar cargar todos los resultados en la memoria de una sola vez.
+
+Cuando utilizas el método lazy, Laravel ejecuta la consulta en la base de datos, pero en lugar de recuperar todos los resultados de inmediato, devuelve una instancia de Illuminate\Support\LazyCollection. Esta instancia implementa la interfaz IteratorAggregate, lo que significa que puedes iterar sobre ella utilizando un bucle foreach.
+```php
+DB::table('users')
+    ->orderBy('id')
+    ->lazy()->each(function ($user) {
+    // ->lazyById()->each(function($user){ // se usa cuando se requieran actualizar los datos
+        echo $user->id . " - " . $user->name . "<br>";
+});
 ```

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB; // paquete que permite realizar consultas a db
 
@@ -150,7 +151,21 @@ Route::get('/prueba2', function () {
         // ->chunkById(100, function ($users) { // se usa cuando se requiere realizar actualizaciones
             // $users es un array de objetos
             foreach ($users as $user) {
-                echo $user->id . " - " . $user->name . "<br>";
+                // echo $user->id . " - " . $user->name . "<br>";
             }
     });
+
+    DB::table('users')
+        ->orderBy('id')
+        ->lazy()->each(function ($user) {
+        // ->lazyById()->each(function($user){ // se usa cuando se requieran actualizar los datos
+            echo $user->id . " - " . $user->name . "<br>";
+    });
+
+    $usuarios = User::query()->lazy();
+    foreach ($usuarios as $user) { // Iterar sobre los resultados
+        // Procesar cada usuario
+        // if (intval($user->id) % 2 !== 0) continue;
+        // echo $user->id . " - " . $user->name . "<br>";
+    }
 });
