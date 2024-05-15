@@ -169,3 +169,12 @@ Route::get('/prueba2', function () {
         // echo $user->id . " - " . $user->name . "<br>";
     }
 });
+
+Route::get('/prueba3', function () {
+    // return "Cantidad total de registros - " . DB::table('users')->count() . "<br>";
+    // return "Numero menor de id - " . DB::table('users')->min('id') . "<br>";
+    // return "Numero mayor de id - " . DB::table('users')->max('id') . "<br>";
+    // return "Promedio de id - " . DB::table('users')->avg('id') . "<br>";
+    // return ( DB::table('users')->where('id', 10000)->exists() ) ? 'Usuario existe' : 'Usuario no existe';
+    return ( DB::table('users')->where('id', 1050)->doesntExist() ) ? 'Usuario no existe' : 'Usuario existe';
+});
