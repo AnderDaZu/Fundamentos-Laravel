@@ -178,3 +178,10 @@ Route::get('/prueba3', function () {
     // return ( DB::table('users')->where('id', 10000)->exists() ) ? 'Usuario existe' : 'Usuario no existe';
     return ( DB::table('users')->where('id', 1050)->doesntExist() ) ? 'Usuario no existe' : 'Usuario existe';
 });
+
+Route::get('/prueba4', function () {
+    // return DB::table('users')->select('id', 'name', 'email')->get();
+    DB::table('users')->select('id', 'name as title', 'email')->orderBy('id')->lazy(100)->each(function ($user) {
+        echo $user->id . " - " . $user->title . "<br>";
+    });
+});
