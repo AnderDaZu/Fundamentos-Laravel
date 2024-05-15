@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB; // paquete que permite realizar consultas a db
 
 /*
 |--------------------------------------------------------------------------
@@ -93,4 +95,103 @@ Route::prefix('posts')->name('posts.')->controller(PostController::class)->group
     Route::get('/{post}/edit', 'edit')->name('edit');
     Route::put('/{post}', 'update')->name('update');
     Route::delete('/{post}', 'destroy')->name('destroy');
+});
+
+Route::get('/prueba', function () {
+    $categories = DB::table('categories')
+                ->select('id', 'name')
+                ->where('id', 1)
+                ->get(); // cuando se usa get, este retorna un array con objetos (resultados)
+    /*
+        [
+            {
+                ...resultado 1
+            },
+            {
+                ...resultado 2
+            } ...
+        ]
+    */
+
+    $category = DB::table('categories')
+                ->select('id', 'name')
+                ->where('id', 1)
+                ->first(); // cuando se usa first, este retorna un objeto (resultado) y es el primero del array
+    /* 
+        {
+            ...resultado 1
+        }
+    */
+
+    $category = DB::table('categories')
+                ->select('id', 'name')
+                ->find(4); // trae el registro cuyo id es igual a 4
+    
+    /*
+        {
+            ...resultado 4
+        }
+    */
+
+    $categories = DB::table('categories')
+                    ->pluck('name', 'id'); // devuelve un array asociativo donde los valores de id son las llaves y los valores de name son los valores
+   
+    /*
+        [
+            '1' => 'category 1',
+            '2' => 'category 2',
+        ]
+    */
+});
+Route::get('/prueba2', function () {
+    // Resultados de fragmentación
+    DB::table('users')
+        ->orderBy('id')
+        ->chunk(100, function ($users) {
+        // ->chunkById(100, function ($users) { // se usa cuando se requiere realizar actualizaciones
+            // $users es un array de objetos
+            foreach ($users as $user) {
+                // echo $user->id . " - " . $user->name . "<br>";
+            }
+    });
+
+    DB::table('users')
+        ->orderBy('id')
+        ->lazy()->each(function ($user) {
+        // ->lazyById()->each(function($user){ // se usa cuando se requieran actualizar los datos
+            echo $user->id . " - " . $user->name . "<br>";
+    });
+
+    $usuarios = User::query()->lazy();
+    foreach ($usuarios as $user) { // Iterar sobre los resultados
+        // Procesar cada usuario
+        // if (intval($user->id) % 2 !== 0) continue;
+        // echo $user->id . " - " . $user->name . "<br>";
+    }
+});
+
+Route::get('/prueba3', function () {
+    // return "Cantidad total de registros - " . DB::table('users')->count() . "<br>";
+    // return "Numero menor de id - " . DB::table('users')->min('id') . "<br>";
+    // return "Numero mayor de id - " . DB::table('users')->max('id') . "<br>";
+    // return "Promedio de id - " . DB::table('users')->avg('id') . "<br>";
+    // return ( DB::table('users')->where('id', 10000)->exists() ) ? 'Usuario existe' : 'Usuario no existe';
+    return ( DB::table('users')->where('id', 1050)->doesntExist() ) ? 'Usuario no existe' : 'Usuario existe';
+});
+
+Route::get('/prueba4', function () {
+    // return DB::table('users')->select('id', 'name', 'email')->get();
+    DB::table('users')->select('id', 'name as title', 'email')->orderBy('id')->lazy(100)->each(function ($user) {
+        echo $user->id . " - " . $user->title . "<br>";
+    });
+});
+
+Route::get('/prueba5', function () {
+    return DB::table('users')
+        ->select('id', 'name', DB::raw("CONCAT(name, ' ', email) as 'name-email'"))
+        ->selectRaw("CONCAT(id, name) as 'id-name'")
+        ->whereRaw('id >= 5')
+        ->where('id', '<=', 20)
+        ->limit(100)
+        ->get();
 });
