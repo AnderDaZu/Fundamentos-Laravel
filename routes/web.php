@@ -185,3 +185,13 @@ Route::get('/prueba4', function () {
         echo $user->id . " - " . $user->title . "<br>";
     });
 });
+
+Route::get('/prueba5', function () {
+    return DB::table('users')
+        ->select('id', 'name', DB::raw("CONCAT(name, ' ', email) as 'name-email'"))
+        ->selectRaw("CONCAT(id, name) as 'id-name'")
+        ->whereRaw('id >= 5')
+        ->where('id', '<=', 20)
+        ->limit(100)
+        ->get();
+});
