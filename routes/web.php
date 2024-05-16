@@ -195,3 +195,11 @@ Route::get('/prueba5', function () {
         ->limit(100)
         ->get();
 });
+
+Route::get('/prueba6', function () {
+    return DB::table('posts')
+        ->join('users', 'posts.user_id', '=', 'users.id')
+        ->join('categories', 'posts.category_id', 'categories.id')
+        ->select('posts.*', 'users.name as user_name', 'categories.name as category_name')
+        ->get();
+});
