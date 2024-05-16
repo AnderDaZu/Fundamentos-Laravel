@@ -214,3 +214,21 @@ Route::get('/prueba7', function () {
         ])
         ->get();
 });
+
+Route::get('/prueba8', function () {
+    return DB::table('posts')
+        ->join('users', 'posts.user_id', 'users.id')
+        ->where('users.email', 'like', '%@example.org')
+        ->orWhere('users.email', 'like', '%@example.net')
+        ->select('posts.*', 'users.name as user_name', 'users.email')
+        ->limit(10)
+        ->get();
+});
+
+Route::get('/prueba9', function () {
+    return DB::table('posts')
+        ->join('users', 'users.id', 'posts.user_id')
+        ->whereNot('users.email', 'like', '%example.com')
+        ->limit(5)
+        ->get();
+});
