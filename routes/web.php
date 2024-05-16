@@ -203,3 +203,14 @@ Route::get('/prueba6', function () {
         ->select('posts.*', 'users.name as user_name', 'categories.name as category_name')
         ->get();
 });
+
+Route::get('/prueba7', function () {
+    return DB::table('posts')
+        // ->where('id', '>=', 5)
+        // ->where('main_title', 'like', '%and%')
+        ->where([
+            ['id', '>=', 8],
+            ['id', '<', 15]
+        ])
+        ->get();
+});
