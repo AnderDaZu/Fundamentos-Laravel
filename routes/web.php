@@ -232,3 +232,57 @@ Route::get('/prueba9', function () {
         ->limit(5)
         ->get();
 });
+
+Route::get('/prueba10', function () {
+    return DB::table('users')
+        ->whereBetween('id', [5, 10])
+        ->get();
+});
+
+Route::get('/prueba11', function () {
+    return DB::table('users')
+        ->whereNotBetween('id', [4, 997])
+        ->get();
+});
+
+Route::get('/prueba12', function () {
+    return DB::table('users')
+        ->whereIn('id', [1, 5, 999, 1005])
+        ->get();
+});
+
+Route::get('/prueba13', function () {
+    return [
+        'whereNotIn' => DB::table('categories')
+            ->whereNotIn('id', [1, 5, 9, 50])
+            ->get(),
+        'whereNull' => DB::table('categories')
+            ->whereNull('id')
+            ->get(),
+        'whereNotNull' => DB::table('categories')
+            ->whereNotNull('id')
+            ->get(),
+        'whereDate' => DB::table('posts')
+            ->whereDate('created_at', '<=', '2024-01-01')
+            ->get(),
+        'whereMonth' => DB::table('posts')
+            ->whereMonth('created_at', '01')
+            ->get(),
+        'whereDay' => DB::table('posts')
+            ->whereDay('created_at', '01')
+            ->get(),
+        'whereYear' => DB::table('posts')
+            ->whereYear('created_at', '2024')
+            ->get(),
+        'whereTime' => DB::table('posts')
+            ->whereTime('created_at', '12:30:00')
+            ->get(),
+        'whereColumn' => DB::table('users')
+            ->whereColumn('created_at', 'updated_at') // busca registros donde los valores de esos campos sean iguales
+            ->get(),
+        'whereColumn2' => DB::table('users')
+            ->whereColumn('created_at', '>', 'updated_at')
+            ->get(),
+    ];
+
+});
