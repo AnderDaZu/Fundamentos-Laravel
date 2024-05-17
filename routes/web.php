@@ -366,3 +366,39 @@ Route::get('/prueba18', function () {
         })
         ->get();
 });
+
+Route::get('/prueba19', function () {
+    // FORMA PARA INSERTAR UN REGISTRO
+    // $user = DB::table('users')
+    //     ->insert([
+    //         'name' => 'test',
+    //         'email' => 'Jr5yq@example.com',
+    //         'password' => bcrypt('test'),
+    //     ]);
+
+    // FORMA PARA INSERTAR VARIOS REGISTROS
+    $users = DB::table('users')
+        ->insertOrIgnore([ // FORMA PARA INSERTAR REGISTROS Y LLEGADO EL CASO OMITIR SI ALGUNO NO CUMPLE ALGUNA RESTRICCIÓN
+        // ->insert([
+            ['name' => 'test1', 'email' => 'Jr5yq1@example.com', 'password' => bcrypt('test')],
+            ['name' => 'test2', 'email' => 'Jr5yq2@example.com', 'password' => bcrypt('test2')],
+            ['name' => 'test3', 'email' => 'Jr5yq3@example.com', 'password' => bcrypt('test3')],
+        ]);
+
+    $user_create_update = DB::table('users')
+        ->upsert(
+            [
+                'name' => 'Anderson Daza',
+                'email' => 'Jr5yq3@example.com',
+                'password' => bcrypt('test3'),
+            ],
+            [
+                'email'
+            ],
+            [
+                'name'
+            ]
+        );
+
+    return 'Se crearon/actualizaron nuevos usuarios: ' . $users;
+});
