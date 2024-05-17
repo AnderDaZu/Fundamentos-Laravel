@@ -330,3 +330,14 @@ Route::get('/prueba15', function () {
         'new_order_user' => $new_order_user,
     ];
 });
+
+Route::get('/prueba16', function () {
+    return DB::table('posts')
+        // ->selectRaw('user_id, count(*) as total')
+        // Lo de arriba ☝️ es igual a lo de abajo 👇|
+        ->select('user_id', DB::raw('count(*) as total'))
+        ->groupBy('user_id')
+        ->having('total', '>=', 2)
+        ->orderBy('total', 'desc')
+        ->get();
+});
