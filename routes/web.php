@@ -353,3 +353,16 @@ Route::get('/prueba17', function () {
             ->limit(5)
             ->get();
 });
+
+Route::get('/prueba18', function () {
+    // when valida un parametro si es true agrega la condición que se agrega en la función anonima de lo contrarío no la agrega
+    $id = 10;
+    return DB::table('users')
+        ->when($id, function ($query) use ($id) {
+            return $query->where('id', $id);
+        })
+        ->when(!$id, function ($query) use ($id) {
+            return $query->where('id', 1);
+        })
+        ->get();
+});
