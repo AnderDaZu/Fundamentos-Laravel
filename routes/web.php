@@ -300,3 +300,33 @@ Route::get('/prueba14', function () {
         // ->orWhere('email', 'like', '%@example.net')
         ->get();
 });
+
+Route::get('/prueba15', function () {
+    // reordenar 👇
+    $users = DB::table('users')
+            ->inRandomOrder()
+            ->limit(5);
+    $new_order_user = $users->reorder()->get();
+
+    return [
+        'orderby' => DB::table('posts')
+            ->orderBy('id', 'desc')
+            ->get(),
+        'latest' => DB::table('posts')
+            ->latest('id') // ordena de manera descendente
+            ->limit(5)
+            ->get(),
+        'oldest' => DB::table('posts')
+            ->oldest('id') // ordena de manera ascendente
+            ->limit(5)
+            ->get(),
+        'inRandomOrder' => DB::table('posts')
+            ->inRandomOrder() // ordena de manera aleatoria
+            ->limit(5)
+            ->get(),
+        'random user' => DB::table('posts')
+            ->inRandomOrder() // selecciona un usuario aleatoriamente
+            ->first(),
+        'new_order_user' => $new_order_user,
+    ];
+});
