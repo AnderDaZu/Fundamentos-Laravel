@@ -195,3 +195,149 @@ Route::get('/prueba5', function () {
         ->limit(100)
         ->get();
 });
+
+Route::get('/prueba6', function () {
+    return DB::table('posts')
+        ->join('users', 'posts.user_id', '=', 'users.id')
+        ->join('categories', 'posts.category_id', 'categories.id')
+        ->select('posts.*', 'users.name as user_name', 'categories.name as category_name')
+        ->get();
+});
+
+Route::get('/prueba7', function () {
+    return DB::table('posts')
+        // ->where('id', '>=', 5)
+        // ->where('main_title', 'like', '%and%')
+        ->where([
+            ['id', '>=', 8],
+            ['id', '<', 15]
+        ])
+        ->get();
+});
+
+Route::get('/prueba8', function () {
+    return DB::table('posts')
+        ->join('users', 'posts.user_id', 'users.id')
+        ->where('users.email', 'like', '%@example.org')
+        ->orWhere('users.email', 'like', '%@example.net')
+        ->select('posts.*', 'users.name as user_name', 'users.email')
+        ->limit(10)
+        ->get();
+});
+
+Route::get('/prueba9', function () {
+    return DB::table('posts')
+        ->join('users', 'users.id', 'posts.user_id')
+        ->whereNot('users.email', 'like', '%example.com')
+        ->limit(5)
+        ->get();
+});
+
+Route::get('/prueba10', function () {
+    return DB::table('users')
+        ->whereBetween('id', [5, 10])
+        ->get();
+});
+
+Route::get('/prueba11', function () {
+    return DB::table('users')
+        ->whereNotBetween('id', [4, 997])
+        ->get();
+});
+
+Route::get('/prueba12', function () {
+    return DB::table('users')
+        ->whereIn('id', [1, 5, 999, 1005])
+        ->get();
+});
+
+Route::get('/prueba13', function () {
+    return [
+        'whereNotIn' => DB::table('categories')
+            ->whereNotIn('id', [1, 5, 9, 50])
+            ->get(),
+        'whereNull' => DB::table('categories')
+            ->whereNull('id')
+            ->get(),
+        'whereNotNull' => DB::table('categories')
+            ->whereNotNull('id')
+            ->get(),
+        'whereDate' => DB::table('posts')
+            ->whereDate('created_at', '<=', '2024-01-01')
+            ->get(),
+        'whereMonth' => DB::table('posts')
+            ->whereMonth('created_at', '01')
+            ->get(),
+        'whereDay' => DB::table('posts')
+            ->whereDay('created_at', '01')
+            ->get(),
+        'whereYear' => DB::table('posts')
+            ->whereYear('created_at', '2024')
+            ->get(),
+        'whereTime' => DB::table('posts')
+            ->whereTime('created_at', '12:30:00')
+            ->get(),
+        'whereColumn' => DB::table('users')
+            ->whereColumn('created_at', 'updated_at') // busca registros donde los valores de esos campos sean iguales
+            ->get(),
+        'whereColumn2' => DB::table('users')
+            ->whereColumn('created_at', '>', 'updated_at')
+            ->get(),
+    ];
+
+});
+
+Route::get('/prueba14', function () {
+    return DB::table('users')
+        ->where('id', '>=', 10)
+        ->where(function ($query) {
+            // Esto permite agrupar varios condicionales
+            $query->where('email', 'like', '%@example.org')
+                ->orWhere('email', 'like', '%@example.net');
+
+        })
+        // ->where('email', 'like', '%@example.org')
+        // ->orWhere('email', 'like', '%@example.net')
+        ->get();
+});
+
+Route::get('/prueba15', function () {
+    // reordenar 👇
+    $users = DB::table('users')
+            ->inRandomOrder()
+            ->limit(5);
+    $new_order_user = $users->reorder()->get();
+
+    return [
+        'orderby' => DB::table('posts')
+            ->orderBy('id', 'desc')
+            ->get(),
+        'latest' => DB::table('posts')
+            ->latest('id') // ordena de manera descendente
+            ->limit(5)
+            ->get(),
+        'oldest' => DB::table('posts')
+            ->oldest('id') // ordena de manera ascendente
+            ->limit(5)
+            ->get(),
+        'inRandomOrder' => DB::table('posts')
+            ->inRandomOrder() // ordena de manera aleatoria
+            ->limit(5)
+            ->get(),
+        'random user' => DB::table('posts')
+            ->inRandomOrder() // selecciona un usuario aleatoriamente
+            ->first(),
+        'new_order_user' => $new_order_user,
+    ];
+});
+
+Route::get('/prueba16', function () {
+    return DB::table('posts')
+        // ->selectRaw('user_id, count(*) as total')
+        // Lo de arriba ☝️ es igual a lo de abajo 👇|
+        ->select('user_id', DB::raw('count(*) as total'))
+        ->groupBy('user_id')
+        ->having('total', '>=', 2)
+        ->orderBy('total', 'desc')
+        ->get();
+});
