@@ -286,3 +286,17 @@ Route::get('/prueba13', function () {
     ];
 
 });
+
+Route::get('/prueba14', function () {
+    return DB::table('users')
+        ->where('id', '>=', 10)
+        ->where(function ($query) {
+            // Esto permite agrupar varios condicionales
+            $query->where('email', 'like', '%@example.org')
+                ->orWhere('email', 'like', '%@example.net');
+
+        })
+        // ->where('email', 'like', '%@example.org')
+        // ->orWhere('email', 'like', '%@example.net')
+        ->get();
+});
