@@ -341,3 +341,15 @@ Route::get('/prueba16', function () {
         ->orderBy('total', 'desc')
         ->get();
 });
+
+Route::get('/prueba17', function () {
+    return DB::table('users')
+            ->select('id', 'name', 'email')
+            // ->skip(3)
+            // ☝️ === 👇 para usar tanto skip como offset, se debe tener definido el método take o el método limit
+            ->offset(3)
+            // ->take(5)
+            // ☝️ === 👇
+            ->limit(5)
+            ->get();
+});
