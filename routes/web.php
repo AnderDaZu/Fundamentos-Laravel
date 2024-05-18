@@ -385,6 +385,7 @@ Route::get('/prueba19', function () {
             ['name' => 'test3', 'email' => 'Jr5yq3@example.com', 'password' => bcrypt('test3')],
         ]);
 
+    // UPSET -> sirve para indicar que campos se deben actualizar y llegado el caso de no existir lo crea
     $user_create_update = DB::table('users')
         ->upsert(
             [
@@ -402,3 +403,28 @@ Route::get('/prueba19', function () {
 
     return 'Se crearon/actualizaron nuevos usuarios: ' . $users;
 });
+
+Route::get('/prueba20', function () {
+
+    // Actualizar registros opción 1
+    DB::table('users')
+        ->where('id', 1)
+        ->update([
+            'name' => 'Fundamentos Laravel 1',
+        ]);
+
+    // Actualizar registros opción 2, updateOrInsert -> permite actualizar registros y a la vez crear de no existir
+    DB::table('users')
+        ->updateOrInsert(
+            [ 'email' => 'goldner.gennaro@example.com' ],
+            [ 'name' => 'Fundamentos Laravel 2', ]
+        );
+
+    DB::table('users')
+        ->updateOrInsert(
+            [ 'email' => 'goldner2.gennaro@example.com'],
+            [ 'name' => 'Fundamentos Laravel 3', 'password' => bcrypt('12345678') ]
+        );
+
+    return 'Registro se actualizo correctamente';
+}); 
