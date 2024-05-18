@@ -451,3 +451,10 @@ Route::get('/prueba22', function () {
 
     return 'Se elimino registro';
 });
+
+Route::get('/prueba23', function () {
+    $users = DB::table('users')
+        ->paginate(15, ['*'], 'pageUser');
+        // ->simplePaginate(15, ['*'], 'pageUser');
+    return view('test', compact('users'));
+});
