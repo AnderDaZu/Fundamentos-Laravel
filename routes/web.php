@@ -427,4 +427,18 @@ Route::get('/prueba20', function () {
         );
 
     return 'Registro se actualizo correctamente';
-}); 
+});
+
+Route::get('/prueba21', function () {
+    // Actualizar un campo incrementando el valor
+    DB::table('users')
+        ->where('id', 1)
+        ->increment('rating', 1);
+
+    // Actualizar un campo decrementando el valor
+    DB::table('users')
+        ->where('id', 2)
+        ->decrement('rating', 1);
+
+    return 'Se actualizo valor de campo';
+});
