@@ -442,3 +442,12 @@ Route::get('/prueba21', function () {
 
     return 'Se actualizo valor de campo';
 });
+
+Route::get('/prueba22', function () {
+    // Eliminar un registro
+    DB::table('users')
+        ->where('id', 1027)
+        ->delete();
+
+    return 'Se elimino registro';
+});
