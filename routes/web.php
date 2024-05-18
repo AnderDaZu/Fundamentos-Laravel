@@ -341,3 +341,120 @@ Route::get('/prueba16', function () {
         ->orderBy('total', 'desc')
         ->get();
 });
+
+Route::get('/prueba17', function () {
+    return DB::table('users')
+            ->select('id', 'name', 'email')
+            // ->skip(3)
+            // ☝️ === 👇 para usar tanto skip como offset, se debe tener definido el método take o el método limit
+            ->offset(3)
+            // ->take(5)
+            // ☝️ === 👇
+            ->limit(5)
+            ->get();
+});
+
+Route::get('/prueba18', function () {
+    // when valida un parametro si es true agrega la condición que se agrega en la función anonima de lo contrarío no la agrega
+    $id = 10;
+    return DB::table('users')
+        ->when($id, function ($query) use ($id) {
+            return $query->where('id', $id);
+        })
+        ->when(!$id, function ($query) use ($id) {
+            return $query->where('id', 1);
+        })
+        ->get();
+});
+
+Route::get('/prueba19', function () {
+    // FORMA PARA INSERTAR UN REGISTRO
+    // $user = DB::table('users')
+    //     ->insert([
+    //         'name' => 'test',
+    //         'email' => 'Jr5yq@example.com',
+    //         'password' => bcrypt('test'),
+    //     ]);
+
+    // FORMA PARA INSERTAR VARIOS REGISTROS
+    $users = DB::table('users')
+        ->insertOrIgnore([ // FORMA PARA INSERTAR REGISTROS Y LLEGADO EL CASO OMITIR SI ALGUNO NO CUMPLE ALGUNA RESTRICCIÓN
+        // ->insert([
+            ['name' => 'test1', 'email' => 'Jr5yq1@example.com', 'password' => bcrypt('test')],
+            ['name' => 'test2', 'email' => 'Jr5yq2@example.com', 'password' => bcrypt('test2')],
+            ['name' => 'test3', 'email' => 'Jr5yq3@example.com', 'password' => bcrypt('test3')],
+        ]);
+
+    // UPSET -> sirve para indicar que campos se deben actualizar y llegado el caso de no existir lo crea
+    $user_create_update = DB::table('users')
+        ->upsert(
+            [
+                'name' => 'Anderson Daza',
+                'email' => 'Jr5yq3@example.com',
+                'password' => bcrypt('test3'),
+            ],
+            [
+                'email'
+            ],
+            [
+                'name'
+            ]
+        );
+
+    return 'Se crearon/actualizaron nuevos usuarios: ' . $users;
+});
+
+Route::get('/prueba20', function () {
+
+    // Actualizar registros opción 1
+    DB::table('users')
+        ->where('id', 1)
+        ->update([
+            'name' => 'Fundamentos Laravel 1',
+        ]);
+
+    // Actualizar registros opción 2, updateOrInsert -> permite actualizar registros y a la vez crear de no existir
+    DB::table('users')
+        ->updateOrInsert(
+            [ 'email' => 'goldner.gennaro@example.com' ],
+            [ 'name' => 'Fundamentos Laravel 2', ]
+        );
+
+    DB::table('users')
+        ->updateOrInsert(
+            [ 'email' => 'goldner2.gennaro@example.com'],
+            [ 'name' => 'Fundamentos Laravel 3', 'password' => bcrypt('12345678') ]
+        );
+
+    return 'Registro se actualizo correctamente';
+});
+
+Route::get('/prueba21', function () {
+    // Actualizar un campo incrementando el valor
+    DB::table('users')
+        ->where('id', 1)
+        ->increment('rating', 1);
+
+    // Actualizar un campo decrementando el valor
+    DB::table('users')
+        ->where('id', 2)
+        ->decrement('rating', 1);
+
+    return 'Se actualizo valor de campo';
+});
+
+Route::get('/prueba22', function () {
+    // Eliminar un registro
+    DB::table('users')
+        ->where('id', 1027)
+        ->delete();
+
+    return 'Se elimino registro';
+});
+
+Route::get('/prueba23', function () {
+    $users = DB::table('users')
+        ->paginate(15, ['*'], 'pageUser');
+        // ->simplePaginate(15, ['*'], 'pageUser');
+    return view('test', compact('users'));
+});
